@@ -32,6 +32,42 @@
         <h2>Songs found:</h2>
         <ul id="search-results-list"></ul>
       </section>
+      <section id="recommendations">
+        <section id="customization-form">
+          <form id="customize-recommendations">
+            <fieldset>
+              <legend>Customize your recommendations</legend>
+              <label for="">Danceability min:</label>
+              <input
+                type="range"
+                name="dance-min"
+                id="dance-min"
+                min="0.0"
+                max="1.0"
+                step="0.1"
+                value="0.0"
+              />
+              <label for="">Danceability max:</label>
+              <input
+                type="range"
+                name="dance-max"
+                id="dance-max"
+                min="0.0"
+                max="1.0"
+                step="0.1"
+                value="1.0"
+              />
+              <button type="submit" id="customize-recommendations-submit">
+                Customize
+              </button>
+            </fieldset>
+          </form>
+        </section>
+        <h2>Reccomendations:</h2>
+        <section id="reccomendations-results">
+          <ul id="reccomendations-results-list"></ul>
+        </section>
+      </section>
     </main>
     <!-- Load app script -->
     <script src="app.js"></script>

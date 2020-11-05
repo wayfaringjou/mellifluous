@@ -84,10 +84,95 @@ function handleSongSearchSubmit() {
   });
 }
 
+function requestSongReccomendation(token, songSelectionId, danceMin = 0.0, danceMax = 1.0)
+//  attributes = {
+//  danceability: { min: 0.0, max: 1.0 },
+//  energy: { min: 0.0, max: 1.0 },
+// popularity: { min: 0.0, max: 1.0 },
+// })
+{
+  const endpoint = 'https://api.spotify.com/v1/recommendations';
+  const reccUrl = `${endpoint}?seed_tracks=${songSelectionId}&min_danceability=${danceMin}&max_danceability=${danceMax}`;
+
+  console.log(reccUrl);
+
+  const reccHeaders = new Headers({
+    Authorization: `Bearer ${token}`,
+  });
+  const reccOptions = {
+    method: 'GET',
+    headers: reccHeaders,
+  };
+
+  return fetch(reccUrl, reccOptions)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(`Server response: ${response.status}`);
+    })
+    .catch((error) => console.log(error.message));
+}
+
+function displayReccomendations(reccsJson) {
+  console.log(reccsJson);
+  const reccSongs = reccsJson.tracks;
+
+  $('#reccomendations-results-list').empty();
+
+  for (let i = 0; i < reccSongs.length; i++) {
+    $('#reccomendations-results-list').append(`
+    <li>
+    <h3>
+    <a 
+      href="${reccSongs[i].external_urls.spotify}" 
+      class="song-result" 
+      data-song-id="${reccSongs[i].id}">
+    ${reccSongs[i].name}</a></h3>
+    <h4>Artist(s)</h4>
+    <p>${reccSongs[i].artists.map((e) => e.name).join(', ')}<p>
+    <h4>Album</h4>
+    <p>${reccSongs[i].album.name}<p>
+    </li>`);
+  }
+}
+
+function handleSongResultClick() {
+  $('#search-results-list').on('click', '.song-result', (e) => {
+    e.preventDefault();
+    const songSelectionName = $(e.currentTarget).text();
+    const songSelectionId = $(e.currentTarget).data().songId;
+    console.log(songSelectionId);
+    $('#search-results-list').empty();
+    $('#search-results-list').append(`<li><h3 class="selected-song" data-song-id=${songSelectionId} >${songSelectionName}</h3></li>`);
+    requestAccessToken()
+      .then((token) => requestSongReccomendation(token, songSelectionId))
+      .then((reccsJson) => displayReccomendations(reccsJson));
+  });
+}
+
+function handleCustomizeReccsSubmit() {
+  $('#customize-recommendations').on('submit', (e) => {
+    e.preventDefault();
+    console.log($('#search-results-list').find('.selected-song').data().songId);
+    console.log($(e.currentTarget).serializeArray());
+    const { songId } = $('#search-results-list').find('.selected-song').data();
+    const danceMin = $(e.currentTarget).serializeArray()[0].value;
+    const danceMax = $(e.currentTarget).serializeArray()[1].value;
+
+    requestAccessToken()
+      .then((token) => requestSongReccomendation(token, songId, danceMin, danceMax))
+      .then((reccsJson) => displayReccomendations(reccsJson));
+  });
+}
+
 // Load listeners when document is ready
 function handleAppLoad() {
   // Listen to song search form submission
   handleSongSearchSubmit();
+  // Listen to click on selected song
+  handleSongResultClick();
+  handleCustomizeReccsSubmit();
 }
 // jQuery document ready load
 $(handleAppLoad());
