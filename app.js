@@ -29,25 +29,36 @@ function requestAccessToken() {
     .then((bodyJson) => bodyJson.access_token)
     .catch((error) => console.log(error.message));
 }
-// Request a song from spotify
-function requestSongSearch(songQuery, token) {
-  const queryUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(songQuery)}&type=track`;
+
+function constructRequestOptions(token) {
   const queryHeaders = new Headers({
     Authorization: `Bearer ${token}`,
   });
-  const queryOptions = {
+  return {
     method: 'GET',
     headers: queryHeaders,
   };
+}
 
-  return fetch(queryUrl, queryOptions)
+function requestToApi(endpointUrl) {
+  return requestAccessToken()
+    .then((token) => constructRequestOptions(token))
+    .then((reqOptions) => fetch(endpointUrl, reqOptions))
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
       throw new Error(`Server response: ${response.status}`);
-    })
-    .catch((error) => console.log(error.message));
+    });
+  // .catch((error) => console.log(error.message));
+}
+
+// Request a song from spotify
+function requestSongSearch(songQuery) {
+  const queryUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(songQuery)}&type=track`;
+
+  return requestToApi(queryUrl)
+    .catch((error) => console.log(`Got ${error.message} when searching for song`));
 }
 // Render found results to song query
 function displaySongResults(tracksJson) {
@@ -78,29 +89,16 @@ function handleSongSearchSubmit() {
     e.preventDefault();
     const songQuery = $(e.currentTarget).find('#song-search-input').val();
 
-    requestAccessToken()
-      .then((token) => requestSongSearch(songQuery, token))
+    requestSongSearch(songQuery)
       .then((tracksJson) => displaySongResults(tracksJson));
   });
 }
 
-function requestSongAttr(token, songId) {
+function requestSongAttr(songId) {
   const queryUrl = `https://api.spotify.com/v1/audio-features/${songId}`;
-  const queryHeaders = new Headers({
-    Authorization: `Bearer ${token}`,
-  });
-  const queryOptions = {
-    method: 'GET',
-    headers: queryHeaders,
-  };
 
-  return fetch(queryUrl, queryOptions)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(`Server response: ${response.status}`);
-    })
+  // Return attributes object
+  return requestToApi(queryUrl)
     .then((bodyJson) => {
       const songAttributes = {
         acousticness: bodyJson.acousticness,
@@ -116,7 +114,7 @@ function requestSongAttr(token, songId) {
       console.log(bodyJson);
       return songAttributes;
     })
-    .catch((error) => console.log(error.message));
+    .catch((error) => console.log(`Got ${error.message} when getting song reccomendations`));
 }
 
 function requestSongReccomendation(songSelectionId, attributesObj = {
@@ -132,30 +130,12 @@ function requestSongReccomendation(songSelectionId, attributesObj = {
 }) {
   const endpoint = 'https://api.spotify.com/v1/recommendations';
   console.log(attributesObj);
-  const reccUrl = `${endpoint}?seed_tracks=${songSelectionId}&target_danceability=${attributesObj.danceability}`;
+  const queryUrl = `${endpoint}?seed_tracks=${songSelectionId}&target_danceability=${attributesObj.danceability}`;
 
-  console.log(reccUrl);
-
-  return requestAccessToken()
-    .then((token) => {
-      const reccHeaders = new Headers({
-        Authorization: `Bearer ${token}`,
-      });
-
-      const reccOptions = {
-        method: 'GET',
-        headers: reccHeaders,
-      };
-      return reccOptions;
-    })
-    .then((reccOptions) => fetch(reccUrl, reccOptions))
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(`Server response: ${response.status}`);
-    })
-    .catch((error) => console.log(error.message));
+  console.log(queryUrl);
+  // Return body json from query response
+  return requestToApi(queryUrl)
+    .catch((error) => console.log(`Got ${error.message} when getting song reccomendations`));
 }
 
 function displayReccomendations(reccsJson) {
@@ -194,13 +174,11 @@ function handleSongResultClick() {
     $('#search-results-list').empty();
     $('#search-results-list').append(`<li><h3 class="selected-song" data-song-id=${songSelectionId} >${songSelectionName}</h3></li>`);
 
-    requestAccessToken()
-      .then((token) => requestSongAttr(token, songSelectionId))
+    requestSongAttr(songSelectionId)
       .then((songAttrObj) => requestSongReccomendation(songSelectionId, songAttrObj))
       .then((reccsJson) => displayReccomendations(reccsJson));
 
-    requestAccessToken()
-      .then((token) => requestSongAttr(token, songSelectionId))
+    requestSongAttr(songSelectionId)
       .then((songAttrObj) => setTrackAtrr(songAttrObj));
   });
 }
@@ -211,11 +189,10 @@ function handleCustomizeReccsSubmit() {
     console.log($('#search-results-list').find('.selected-song').data().songId);
     console.log($(e.currentTarget).serializeArray());
     const songId = $('#search-results-list').find('.selected-song').data().songId;
-    const danceMin = $(e.currentTarget).serializeArray()[0].value;
-    const danceMax = $(e.currentTarget).serializeArray()[1].value;
+//    const danceMin = $(e.currentTarget).serializeArray()[0].value;
+//    const danceMax = $(e.currentTarget).serializeArray()[1].value;
 
-    requestAccessToken()
-      .then((token) => requestSongReccomendation(token, songId, danceMin, danceMax))
+    requestSongReccomendation(songId)
       .then((reccsJson) => displayReccomendations(reccsJson));
   });
 }
