@@ -84,27 +84,71 @@ function handleSongSearchSubmit() {
   });
 }
 
-function requestSongReccomendation(token, songSelectionId, danceMin = 0.0, danceMax = 1.0)
-//  attributes = {
-//  danceability: { min: 0.0, max: 1.0 },
-//  energy: { min: 0.0, max: 1.0 },
-// popularity: { min: 0.0, max: 1.0 },
-// })
-{
+function requestSongAttr(token, songId) {
+  const queryUrl = `https://api.spotify.com/v1/audio-features/${songId}`;
+  const queryHeaders = new Headers({
+    Authorization: `Bearer ${token}`,
+  });
+  const queryOptions = {
+    method: 'GET',
+    headers: queryHeaders,
+  };
+
+  return fetch(queryUrl, queryOptions)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(`Server response: ${response.status}`);
+    })
+    .then((bodyJson) => {
+      const songAttributes = {
+        acousticness: bodyJson.acousticness,
+        danceability: bodyJson.danceability,
+        energy: bodyJson.energy,
+        instrumentalness: bodyJson.instrumentalness,
+        liveness: bodyJson.liveness,
+        loudness: bodyJson.loudness,
+        speechiness: bodyJson.speechiness,
+        valence: bodyJson.valence,
+        tempo: bodyJson.tempo,
+      };
+      console.log(bodyJson);
+      return songAttributes;
+    })
+    .catch((error) => console.log(error.message));
+}
+
+function requestSongReccomendation(songSelectionId, attributesObj = {
+  acousticness: 0.0,
+  danceability: 0.7,
+  energy: 0.8,
+  instrumentalness: 0.0,
+  liveness: 0.05,
+  loudness: -8,
+  speechiness: 0.05,
+  valence: 0.625,
+  tempo: 125,
+}) {
   const endpoint = 'https://api.spotify.com/v1/recommendations';
-  const reccUrl = `${endpoint}?seed_tracks=${songSelectionId}&min_danceability=${danceMin}&max_danceability=${danceMax}`;
+  console.log(attributesObj);
+  const reccUrl = `${endpoint}?seed_tracks=${songSelectionId}&target_danceability=${attributesObj.danceability}`;
 
   console.log(reccUrl);
 
-  const reccHeaders = new Headers({
-    Authorization: `Bearer ${token}`,
-  });
-  const reccOptions = {
-    method: 'GET',
-    headers: reccHeaders,
-  };
+  return requestAccessToken()
+    .then((token) => {
+      const reccHeaders = new Headers({
+        Authorization: `Bearer ${token}`,
+      });
 
-  return fetch(reccUrl, reccOptions)
+      const reccOptions = {
+        method: 'GET',
+        headers: reccHeaders,
+      };
+      return reccOptions;
+    })
+    .then((reccOptions) => fetch(reccUrl, reccOptions))
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -137,6 +181,10 @@ function displayReccomendations(reccsJson) {
   }
 }
 
+function setTrackAtrr(songAttrObj) {
+  $('#danceability').val(songAttrObj.danceability);
+}
+
 function handleSongResultClick() {
   $('#search-results-list').on('click', '.song-result', (e) => {
     e.preventDefault();
@@ -145,9 +193,15 @@ function handleSongResultClick() {
     console.log(songSelectionId);
     $('#search-results-list').empty();
     $('#search-results-list').append(`<li><h3 class="selected-song" data-song-id=${songSelectionId} >${songSelectionName}</h3></li>`);
+
     requestAccessToken()
-      .then((token) => requestSongReccomendation(token, songSelectionId))
+      .then((token) => requestSongAttr(token, songSelectionId))
+      .then((songAttrObj) => requestSongReccomendation(songSelectionId, songAttrObj))
       .then((reccsJson) => displayReccomendations(reccsJson));
+
+    requestAccessToken()
+      .then((token) => requestSongAttr(token, songSelectionId))
+      .then((songAttrObj) => setTrackAtrr(songAttrObj));
   });
 }
 
@@ -156,7 +210,7 @@ function handleCustomizeReccsSubmit() {
     e.preventDefault();
     console.log($('#search-results-list').find('.selected-song').data().songId);
     console.log($(e.currentTarget).serializeArray());
-    const { songId } = $('#search-results-list').find('.selected-song').data();
+    const songId = $('#search-results-list').find('.selected-song').data().songId;
     const danceMin = $(e.currentTarget).serializeArray()[0].value;
     const danceMax = $(e.currentTarget).serializeArray()[1].value;
 
