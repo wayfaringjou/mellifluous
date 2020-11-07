@@ -167,6 +167,40 @@ function storeResults(storageObj, dataArray) {
   });
   return storageObj;
 }
+
+function avgAttrValues(seedSelectionStorage) {
+  const storageIterator = Object.keys(seedSelectionStorage);
+  const attrIterator = Object.keys(targetAttributes);
+  const averagedValues = Object.create(targetAttributes);
+  let addedItems = 0;
+  attrIterator.forEach((attr) => {
+    averagedValues[attr] = 0;
+  });
+
+  console.log(targetAttributes);
+  storageIterator.forEach((item) => {
+    if (seedSelectionStorage[item].attributes) {
+      addedItems++;
+      attrIterator.forEach((attr) => {
+        console.log(seedSelectionStorage[item].attributes[attr]);
+        averagedValues[attr] += seedSelectionStorage[item].attributes[attr];
+      });
+    }
+
+    attrIterator.forEach((attr) => {
+      const avgValue = averagedValues[attr] / addedItems;
+      if (avgValue < 0) {
+        targetAttributes[attr] = -Math.abs(
+          Number(`${Math.round(`${avgValue}e4`)}e-4`),
+        );
+      } else {
+        targetAttributes[attr] = Number(`${Math.round(`${avgValue}e4`)}e-4`);
+      }
+    });
+  });
+  return targetAttributes;
+}
+
 // Store an item object in a object of seeds selected for reccomendations
 function storeSeedItem(itemObj, itemArticleObj) {
   const itemId = itemObj.id;
@@ -176,11 +210,12 @@ function storeSeedItem(itemObj, itemArticleObj) {
     requestSongAttr(itemObj.id)
       .then((attributesObj) => {
         seedSelection[itemId].attributes = attributesObj;
-      });
+        return seedSelection;
+      })
+      .then((seedSelectionStorage) => avgAttrValues(seedSelectionStorage));
   }
 
   seedSelection[itemId].articleObj = itemArticleObj;
-
   return seedSelection[itemId];
 }
 
@@ -256,13 +291,14 @@ function displayReccomendations(reccsJson) {
   }
 }
 
-function setTrackAtrr(songAttrObj) {
-  $('#danceability').val(songAttrObj.danceability);
+function renderAtrrValues(attrObj) {
+  $('#danceability').val(attrObj.danceability);
 }
 
 function renderSeedSelection(itemObj) {
   $('#seed-selection').append(itemObj.articleObj);
   $('#search-results-list').empty();
+  renderAtrrValues(targetAttributes);
 }
 
 /* -------- Handlers -------- */
