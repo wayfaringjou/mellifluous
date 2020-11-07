@@ -145,26 +145,6 @@ function requestSongReccomendation(songSelectionId, attributesObj = {
 
 /* -------- Data storage functions -------- */
 
-// Store search results or reccomendations
-function storeResults(storageObject, dataArray) {
-  dataArray.forEach((e) => {
-    const itemId = e.id;
-    storageObject[itemId] = e;
-  });
-}
-// Store an item object in a object of seeds selected for reccomendations
-function storeSeedItem(itemObj) {
-  const itemId = itemObj.id;
-  seedSelection[itemId] = itemObj;
-
-  if (itemObj.type === 'track') {
-    requestSongAttr(itemObj.id)
-      .then((attributesObj) => {
-        seedSelection[itemId].attributes = attributesObj;
-      });
-  }
-}
-
 // Delete an item from search results, seeds or reccomendations object
 function deleteStoredItem(storageObj, itemId) {
   return delete storageObj[itemId];
@@ -174,31 +154,83 @@ function clearStoredObj(storageObj) {
   Object.keys(storageObj).forEach((e) => delete storageObj[e]);
 }
 
+// Store search results or reccomendations
+function storeResults(storageObj, dataArray) {
+  // Clear stored keys first if there are any (does this go here?)
+  if (Object.keys(storageObj).length !== 0) {
+    clearStoredObj(storageObj);
+  }
+  // Populate storage with new data
+  dataArray.forEach((e) => {
+    const itemId = e.id;
+    storageObj[itemId] = e;
+  });
+  return storageObj;
+}
+// Store an item object in a object of seeds selected for reccomendations
+function storeSeedItem(itemObj, itemArticleObj) {
+  const itemId = itemObj.id;
+  seedSelection[itemId] = itemObj;
+
+  if (itemObj.type === 'track') {
+    requestSongAttr(itemObj.id)
+      .then((attributesObj) => {
+        seedSelection[itemId].attributes = attributesObj;
+      });
+  }
+
+  seedSelection[itemId].articleObj = itemArticleObj;
+
+  return seedSelection[itemId];
+}
+
+/* -------- Generator Functions -------- */
+function generateListArticle(storageObj, itemId) {
+  const itemObj = storageObj[itemId];
+  let img;
+  let caption;
+  if (itemObj.type === 'track') {
+    img = itemObj.album.images.length
+      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." />`
+      : '<img src="" alt="No image found" />';
+    caption = itemObj.artists.map((e) => e.name).join(', ');
+  } else {
+    img = itemObj.images.length
+      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" />`
+      : '<img src="" alt="No image found" />';
+    if (itemObj.genres.length) {
+      caption = itemObj.genres.join(', ');
+    }
+  }
+
+  return `
+  <li>
+    <article class="search-result-item" data-id="${itemId}" data-type="${itemObj.type}">
+      <a href="#" style="display: block; background-color: lightgray">
+        <div>
+           ${img}
+           <h3>${itemObj.name}</h3>
+           <h4>${caption || ''}</h4>
+        </div>
+      </a>
+    </article>
+  </li>`;
+}
+
+function generateResultsList(storageObj) {
+  const resultsIdsArray = Object.keys(storageObj);
+  const resultsList = resultsIdsArray.map((itemId) => generateListArticle(storageObj, itemId));
+  return resultsList.join('');
+}
+
 /* -------- Renderering functions -------- */
 
 // Render found results to song query
-function displaySongResults(tracksJson) {
-  const foundSongs = tracksJson.tracks.items;
+function renderResults(storageObj) {
+  const foundItemsIdList = Object.keys(storageObj);
+  console.log(foundItemsIdList);
 
-  $('#search-results-list').empty();
-
-  for (let i = 0; i < foundSongs.length; i++) {
-    $('#search-results-list').append(`
-    <li>
-    <h3>
-    <a 
-      href="#" 
-      class="song-result" 
-      data-id="${foundSongs[i].id}"
-      data-type="${foundSongs[i].type}" >
-    ${foundSongs[i].name}</a></h3>
-    <h4>Artist(s)</h4>
-    <p>${foundSongs[i].artists.map((e) => e.name).join(', ')}<p>
-    <h4>Album</h4>
-    <img src="${foundSongs[i].album.images[2].url}" alt="${foundSongs[i].album.name} Album Art" />
-    <p>${foundSongs[i].album.name}<p>
-    </li>`);
-  }
+  $('#search-results-list').html(generateResultsList(storageObj));
 }
 
 function displayReccomendations(reccsJson) {
@@ -228,43 +260,35 @@ function setTrackAtrr(songAttrObj) {
   $('#danceability').val(songAttrObj.danceability);
 }
 
-/* -------- Hanlders -------- */
+function renderSeedSelection(itemObj) {
+  $('#seed-selection').append(itemObj.articleObj);
+  $('#search-results-list').empty();
+}
+
+/* -------- Handlers -------- */
 
 // Listen for song search form submission
 function handleKeywordSearchSubmit() {
-  $('#song-search').on('submit', (e) => {
+  $('#keyword-search').on('submit', (e) => {
     e.preventDefault();
-    const keywordQuery = $(e.currentTarget).find('#song-search-input').val();
+    const keywordQuery = $(e.currentTarget).find('#keyword-search-input').val();
+    const queryType = $(e.currentTarget).serializeArray()[1].value;
 
-    requestKeywordSearch(keywordQuery, ['track'])
-      .then((tracksJson) => displaySongResults(tracksJson));
-
-    requestKeywordSearch(keywordQuery, ['track'])
-      .then((tracksJson) => storeResults(searchResults, tracksJson.tracks.items));
+    requestKeywordSearch(keywordQuery, [queryType])
+      .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))
+      .then((storedResults) => renderResults(storedResults));
   });
 }
 
 function handleQueryResultClick() {
-  $('#search-results-list').on('click', '.song-result', (e) => {
+  $('#search-results-list').on('click', '.search-result-item', (e) => {
     e.preventDefault();
-    const selectionName = $(e.currentTarget).text();
-    const selectionId = $(e.currentTarget).data().id;
-    const selectionType = $(e.currentTarget).data().type;
-    console.log(selectionId);
-    $('#search-results-list').empty();
-    $('#search-results-list').append(`<li><h3 class="selected-song" data-id=${selectionId} >${selectionName}</h3></li>`);
-
-    requestSongAttr(selectionId)
-      .then((songAttrObj) => requestSongReccomendation(selectionId, songAttrObj))
-      .then((reccsJson) => displayReccomendations(reccsJson));
-
-    requestSongAttr(selectionId)
-      .then((songAttrObj) => setTrackAtrr(songAttrObj));
-
-    requestItemObject(selectionId, selectionType)
-      .then((itemObj) => storeSeedItem(itemObj));
-
-    // Call store, then call renderer and catch error if store is full
+    console.log(e.currentTarget);
+    renderSeedSelection($(e.currentTarget));
+    const articleData = $(e.currentTarget).data();
+    requestItemObject(articleData.id, articleData.type)
+      .then((itemObj) => storeSeedItem(itemObj, $(e.currentTarget)))
+      .then((storedSeedItem) => renderSeedSelection(storedSeedItem));
   });
 }
 

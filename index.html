@@ -14,23 +14,44 @@
   <body>
     <main>
       <section id="search-form">
-        <h2>Search for a song</h2>
-        <form id="song-search">
+        <h2>Search for a song or artist</h2>
+        <form id="keyword-search">
           <fieldset>
-            <legend>Enter song to search:</legend>
-            <label for="song-search-input"></label>
+            <legend>Enter song or artist to search:</legend>
+            <label for="keyword-search-input"></label>
             <input
+              required
               type="text"
-              name="song-search-input"
-              id="song-search-input"
+              name="keyword-search-input"
+              id="keyword-search-input"
             />
+            <input
+              type="radio"
+              name="search-type"
+              id="search-type-song"
+              value="track"
+              checked
+            />
+            <label for="search-type-song">Song</label>
+            <input
+              type="radio"
+              name="search-type"
+              id="search-type-artist"
+              value="artist"
+            />
+            <label for="search-type-artist">Artist</label>
             <button type="submit" id="song-search-submit">Search</button>
           </fieldset>
         </form>
       </section>
       <section id="search-results">
-        <h2>Songs found:</h2>
-        <ul id="search-results-list"></ul>
+        <h2>Found:</h2>
+        <ul id="search-results-list">
+          
+        </ul>
+      </section>
+      <section id="seed-selection">
+        <h2>Selected:</h2>
       </section>
       <section id="recommendations">
         <section id="customization-form">
