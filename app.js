@@ -9,15 +9,33 @@ const seedSelection = {};
 // Storage for optional target attributes
 // These are general default values
 const targetAttributes = {
-  acousticness: 0.0,
-  danceability: 0.7,
-  energy: 0.8,
-  instrumentalness: 0.0,
-  liveness: 0.05,
-  loudness: -8,
-  speechiness: 0.05,
-  valence: 0.625,
-  tempo: 125,
+  acousticness: {
+    min: 0.0, max: 1.0, value: 0.0, step: 0.01,
+  },
+  danceability: {
+    min: 0.0, max: 1.0, value: 0.7, step: 0.01,
+  },
+  energy: {
+    min: 0.0, max: 1.0, value: 0.8, step: 0.01,
+  },
+  instrumentalness: {
+    min: 0.0, max: 1.0, value: 0.0, step: 0.01,
+  },
+  liveness: {
+    min: 0.0, max: 1.0, value: 0.05, step: 0.01,
+  },
+  loudness: {
+    min: -60, max: 0, value: -8, step: 1,
+  },
+  speechiness: {
+    min: 0.0, max: 1.0, value: 0.05, step: 0.01,
+  },
+  valence: {
+    min: 0.0, max: 1.0, value: 0.625, step: 0.01,
+  },
+  tempo: {
+    min: 0, max: 250, value: 125, step: 1,
+  },
 };
 
 // Storage for recommendations
@@ -190,11 +208,11 @@ function avgAttrValues(seedSelectionStorage) {
     attrIterator.forEach((attr) => {
       const avgValue = averagedValues[attr] / addedItems;
       if (avgValue < 0) {
-        targetAttributes[attr] = -Math.abs(
+        targetAttributes[attr].value = -Math.abs(
           Number(`${Math.round(`${avgValue}e4`)}e-4`),
         );
       } else {
-        targetAttributes[attr] = Number(`${Math.round(`${avgValue}e4`)}e-4`);
+        targetAttributes[attr].value = Number(`${Math.round(`${avgValue}e4`)}e-4`);
       }
     });
   });
@@ -258,6 +276,32 @@ function generateResultsList(storageObj) {
   return resultsList.join('');
 }
 
+function generateRange(attrObj, attrKey) {
+  return `
+  <label for="${attrKey}">${attrKey}</label>
+  <input
+    type="range"
+    name="${attrKey}"
+    id="${attrKey}"
+    min="${attrObj[attrKey].min}"
+    max="${attrObj[attrKey].max}"
+    value="${attrObj[attrKey].value}"
+    step="${attrObj[attrKey].step}"
+  />`;
+}
+
+function generateAttributeRanges(attrObj) {
+  const attrKeysArray = Object.keys(attrObj);
+  const attrRanges = attrKeysArray.map((attrKey) => generateRange(targetAttributes, attrKey));
+
+  attrRanges.push(`
+  <button type="submit" id="customize-recommendations-submit">
+  Customize
+  </button>`);
+
+  return attrRanges.join('');
+}
+
 /* -------- Renderering functions -------- */
 
 // Render found results to song query
@@ -291,13 +335,23 @@ function displayReccomendations(reccsJson) {
   }
 }
 
+function adjustAtrrValues(attrObj) {
+  Object.keys(attrObj).forEach((attr) => {
+    $(`#${attr}`).val(attrObj[attr].value);
+  });
+}
+
 function renderAtrrValues(attrObj) {
-  $('#danceability').val(attrObj.danceability);
+  if (!$('#customize-recommendations').find('input').length) {
+    $('#customize-recommendations').find('fieldset').append(generateAttributeRanges(targetAttributes));
+  }
+  adjustAtrrValues(attrObj);
 }
 
 function renderSeedSelection(itemObj) {
   $('#seed-selection').append(itemObj.articleObj);
   $('#search-results-list').empty();
+
   renderAtrrValues(targetAttributes);
 }
 
