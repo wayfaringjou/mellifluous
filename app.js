@@ -261,12 +261,12 @@ function generateListArticle(storageObj, itemId) {
   let caption;
   if (itemObj.type === 'track') {
     img = itemObj.album.images.length
-      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." />`
+      ? `<img src="${itemObj.album.images[itemObj.album.images.length - 1].url}" alt="'${itemObj.album.name}' album cover." />`
       : '<img src="" alt="No image found" />';
     caption = itemObj.artists.map((e) => e.name).join(', ');
   } else {
     img = itemObj.images.length
-      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" />`
+      ? `<img src="${itemObj.images[itemObj.images.length - 1].url}" alt="${itemObj.name}" />`
       : '<img src="" alt="No image found" />';
     if (itemObj.genres.length) {
       caption = itemObj.genres.join(', ');
@@ -322,11 +322,11 @@ function generateAttributeRanges(attrObj) {
 /* -------- Renderering functions -------- */
 
 // Render found results to song query
-function renderResults(storageObj, renderSectionStr) {
+function renderResults(storageObj, renderSectionStr, generatorFunc) {
   const foundItemsIdList = Object.keys(storageObj);
   console.log(foundItemsIdList);
 
-  $(`${renderSectionStr}`).html(generateResultsList(storageObj));
+  $(`${renderSectionStr}`).html(generatorFunc(storageObj));
 }
 
 function renderReccomendations(storedReccomendationsObj) {
@@ -382,10 +382,10 @@ function handleKeywordSearchSubmit() {
 
     requestKeywordSearch(keywordQuery, [queryType])
       .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))
-      .then((storedResults) => renderResults(storedResults, '#search-results-list'));
+      .then((storedResults) => renderResults(storedResults, '#search-results-list', generateResultsList));
   });
 }
-
+// Listen for a selection from the results list
 function handleQueryResultClick() {
   $('#search-results-list').on('click', '.search-result-item', (e) => {
     e.preventDefault();
@@ -393,31 +393,33 @@ function handleQueryResultClick() {
     renderSeedSelection($(e.currentTarget));
     const articleData = $(e.currentTarget).data();
 
-    // the renderer should come last
-    // the reccomendations chain has two rendering actions: the list, and the selected
-    // both use the seed selection object, leverage that
-
     requestItemObject(articleData.id, articleData.type)
       .then((itemObj) => storeSeedItem(itemObj, $(e.currentTarget)))
       .then((seedSelectionObj) => requestReccomendations(seedSelectionObj, targetAttributes))
       .then((reccomendationsObj) => storeResults(reccomendations, reccomendationsObj.tracks))
       .then((storedReccomendationsObj) => {
         renderSeedSelection(seedSelection[articleData.id]);
-        renderResults(storedReccomendationsObj, '#reccomendations-results-list');
+        renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList);
       });
   });
 }
-function handleCustomizeReccsSubmit() {
+// Listen for customization form submission
+function handleCustomizeSubmit() {
   $('#customize-recommendations').on('submit', (e) => {
     e.preventDefault();
-    console.log($('#search-results-list').find('.selected-song').data().id);
     console.log($(e.currentTarget).serializeArray());
-    const songId = $('#search-results-list').find('.selected-song').data().id;
-    //    const danceMin = $(e.currentTarget).serializeArray()[0].value;
-    //    const danceMax = $(e.currentTarget).serializeArray()[1].value;
 
-    requestSongReccomendation(songId)
-      .then((reccsJson) => displayReccomendations(reccsJson));
+    $(e.currentTarget).serializeArray().forEach((e) => {
+      targetAttributes[e.name].value = e.value;
+    });
+
+    console.log(targetAttributes);
+
+    requestReccomendations(seedSelection, targetAttributes)
+      .then((reccomendationsObj) => storeResults(reccomendations, reccomendationsObj.tracks))
+      .then((storedReccomendationsObj) => {
+        renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList);
+      });
   });
 }
 
@@ -427,7 +429,7 @@ function handleAppLoad() {
   handleKeywordSearchSubmit();
   // Listen to click on selected song
   handleQueryResultClick();
-  handleCustomizeReccsSubmit();
+  handleCustomizeSubmit();
 }
 // jQuery document ready load
 $(handleAppLoad());
