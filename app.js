@@ -140,20 +140,37 @@ function requestSongAttr(songId) {
     .catch((error) => console.log(`Got ${error.message} when getting song reccomendations`));
 }
 
-function requestSongReccomendation(songSelectionId, attributesObj = {
-  acousticness: 0.0,
-  danceability: 0.7,
-  energy: 0.8,
-  instrumentalness: 0.0,
-  liveness: 0.05,
-  loudness: -8,
-  speechiness: 0.05,
-  valence: 0.625,
-  tempo: 125,
-}) {
+function requestReccomendations(seedSelectionObj, attrObj) {
+  console.log(seedSelectionObj);
   const endpoint = 'https://api.spotify.com/v1/recommendations';
-  console.log(attributesObj);
-  const queryUrl = `${endpoint}?seed_tracks=${songSelectionId}&target_danceability=${attributesObj.danceability}`;
+  const items = { artists: [], tracks: [] };
+  // Object.keys(seedSelectionObj).forEach((e) => console.log(seedSelection[e]));
+  Object.keys(seedSelectionObj).forEach((e) => {
+    if (seedSelectionObj[e].type === 'artist') {
+      items.artists.push(seedSelectionObj[e].id);
+    } else if (seedSelectionObj[e].type === 'track') {
+      items.tracks.push(seedSelectionObj[e].id);
+    }
+  });
+  const seeds = [];
+  if (items.artists.length) {
+    seeds.push(`seed_artists=${items.artists.join()}`);
+  }
+
+  if (items.tracks.length) {
+    seeds.push(`seed_tracks=${items.tracks.join()}`);
+  }
+  const attributes = [];
+  Object.keys(attrObj).forEach((e) => {
+    attributes.push(`target_${e}=${attrObj[e].value}`);
+  });
+  console.log(items);
+  console.log(seeds.join('&'));
+  console.log(attributes.join('&'));
+
+  // seed_tracks(comma separated) &seed_artists(comma separated)
+  // &target_(attr)
+  const queryUrl = `${endpoint}?${seeds.join('&')}&${attributes.join('&')}`;
 
   console.log(queryUrl);
   // Return body json from query response
@@ -234,7 +251,7 @@ function storeSeedItem(itemObj, itemArticleObj) {
   }
 
   seedSelection[itemId].articleObj = itemArticleObj;
-  return seedSelection[itemId];
+  return seedSelection;
 }
 
 /* -------- Generator Functions -------- */
@@ -305,15 +322,14 @@ function generateAttributeRanges(attrObj) {
 /* -------- Renderering functions -------- */
 
 // Render found results to song query
-function renderResults(storageObj) {
+function renderResults(storageObj, renderSectionStr) {
   const foundItemsIdList = Object.keys(storageObj);
   console.log(foundItemsIdList);
 
-  $('#search-results-list').html(generateResultsList(storageObj));
+  $(`${renderSectionStr}`).html(generateResultsList(storageObj));
 }
 
-function displayReccomendations(reccsJson) {
-  console.log(reccsJson);
+function renderReccomendations(storedReccomendationsObj) {
   const reccSongs = reccsJson.tracks;
 
   $('#reccomendations-results-list').empty();
@@ -366,7 +382,7 @@ function handleKeywordSearchSubmit() {
 
     requestKeywordSearch(keywordQuery, [queryType])
       .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))
-      .then((storedResults) => renderResults(storedResults));
+      .then((storedResults) => renderResults(storedResults, '#search-results-list'));
   });
 }
 
@@ -376,12 +392,21 @@ function handleQueryResultClick() {
     console.log(e.currentTarget);
     renderSeedSelection($(e.currentTarget));
     const articleData = $(e.currentTarget).data();
+
+    // the renderer should come last
+    // the reccomendations chain has two rendering actions: the list, and the selected
+    // both use the seed selection object, leverage that
+
     requestItemObject(articleData.id, articleData.type)
       .then((itemObj) => storeSeedItem(itemObj, $(e.currentTarget)))
-      .then((storedSeedItem) => renderSeedSelection(storedSeedItem));
+      .then((seedSelectionObj) => requestReccomendations(seedSelectionObj, targetAttributes))
+      .then((reccomendationsObj) => storeResults(reccomendations, reccomendationsObj.tracks))
+      .then((storedReccomendationsObj) => {
+        renderSeedSelection(seedSelection[articleData.id]);
+        renderResults(storedReccomendationsObj, '#reccomendations-results-list');
+      });
   });
 }
-
 function handleCustomizeReccsSubmit() {
   $('#customize-recommendations').on('submit', (e) => {
     e.preventDefault();
