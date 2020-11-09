@@ -364,8 +364,8 @@ function renderAtrrValues(attrObj) {
   adjustAtrrValues(attrObj);
 }
 
-function renderSeedSelection(itemObj) {
-  $('#seed-selection').append(itemObj.articleObj);
+function renderSeedSelection(jQueryObj) {
+  $('#seed-selection').append(jQueryObj);
   $('#search-results-list').empty();
 
   renderAtrrValues(targetAttributes);
@@ -390,6 +390,11 @@ function handleQueryResultClick() {
   $('#search-results-list').on('click', '.search-result-item', (e) => {
     e.preventDefault();
     console.log(e.currentTarget);
+
+    $(e.currentTarget).removeClass('search-result-item');
+    $(e.currentTarget).addClass('selected-item');
+    $(e.currentTarget).off();
+
     renderSeedSelection($(e.currentTarget));
     const articleData = $(e.currentTarget).data();
 
@@ -398,11 +403,27 @@ function handleQueryResultClick() {
       .then((seedSelectionObj) => requestReccomendations(seedSelectionObj, targetAttributes))
       .then((reccomendationsObj) => storeResults(reccomendations, reccomendationsObj.tracks))
       .then((storedReccomendationsObj) => {
-        renderSeedSelection(seedSelection[articleData.id]);
+        // renderSeedSelection(seedSelection[articleData.id]);
         renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList);
       });
   });
 }
+
+// Listen for a click on selected items
+function handleSelectedClick() {
+  $('#seed-selection').on('click', '.selected-item', (e) => {
+    e.preventDefault();
+    console.log($(e.currentTarget).data());
+
+    $(e.currentTarget).remove();
+    deleteStoredItem(seedSelection, $(e.currentTarget).data().id);
+
+    requestReccomendations(seedSelection, targetAttributes)
+      .then((recommendationsObj) => storeResults(reccomendations, recommendationsObj.tracks))
+      .then((storedReccomendationsObj) => renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList));
+  });
+}
+
 // Listen for customization form submission
 function handleCustomizeSubmit() {
   $('#customize-recommendations').on('submit', (e) => {
@@ -429,6 +450,7 @@ function handleAppLoad() {
   handleKeywordSearchSubmit();
   // Listen to click on selected song
   handleQueryResultClick();
+  handleSelectedClick();
   handleCustomizeSubmit();
 }
 // jQuery document ready load
