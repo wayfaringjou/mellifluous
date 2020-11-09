@@ -36,10 +36,13 @@ const targetAttributes = {
   tempo: {
     min: 0, max: 250, value: 125, step: 1,
   },
+  popularity: {
+    min: 0, max: 100, value: 50, step: 1,
+  },
 };
 
 // Storage for recommendations
-const reccomendations = {};
+const recommendations = {};
 
 /* -------- Helper functions for spotify API requests -------- */
 
@@ -47,7 +50,7 @@ const reccomendations = {};
 function requestAccessToken() {
   // Define request headers
   const authHeaders = new Headers({
-    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6MTM3N2IwMjMwN2I5NDVmNmE1YjY3NDk3NDdkODVlYTU=',
+    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6MjMykMWE4ZDczZTRmNDY1OGE5NzZiZGZmM2E5ODk0YjU=',
     'Content-Type': 'application/x-www-form-urlencoded',
   });
   // Spotify's Api endpoint to get access token
@@ -230,6 +233,7 @@ function avgAttrValues(seedSelectionStorage) {
         );
       } else {
         targetAttributes[attr].value = Number(`${Math.round(`${avgValue}e4`)}e-4`);
+        console.log(targetAttributes[attr].value);
       }
     });
   });
@@ -245,11 +249,18 @@ function storeSeedItem(itemObj, itemArticleObj) {
     requestSongAttr(itemObj.id)
       .then((attributesObj) => {
         seedSelection[itemId].attributes = attributesObj;
+        // Add popularity to attributes to have it available for customization
+        // seedSelection[itemId].attributes.popularity = itemObj.popularity;
         return seedSelection;
       })
       .then((seedSelectionStorage) => avgAttrValues(seedSelectionStorage));
+  } else {
+    seedSelection[itemId].attributes = { popularity: 0 };
+    console.log(itemObj.popularity);
+    console.log(seedSelection[itemId])
+    seedSelection[itemId].attributes.popularity = itemObj.popularity;
+    avgAttrValues(seedSelection);
   }
-
   seedSelection[itemId].articleObj = itemArticleObj;
   return seedSelection;
 }
@@ -287,9 +298,9 @@ function generateListArticle(storageObj, itemId) {
   </li>`;
 }
 
-function generateResultsList(storageObj) {
+function generateResultsList(storageObj, generatorFunc) {
   const resultsIdsArray = Object.keys(storageObj);
-  const resultsList = resultsIdsArray.map((itemId) => generateListArticle(storageObj, itemId));
+  const resultsList = resultsIdsArray.map((itemId) => generatorFunc(storageObj, itemId));
   return resultsList.join('');
 }
 
@@ -319,6 +330,22 @@ function generateAttributeRanges(attrObj) {
   return attrRanges.join('');
 }
 
+function generateRecommendationArticle(storageObj, itemId) {
+  return `
+  <li>
+  <h3>
+  <a 
+    href="${storageObj[itemId].external_urls.spotify}" 
+    class="song-result" 
+    data-song-id="${storageObj[itemId].id}">
+  ${storageObj[itemId].name}</a></h3>
+  <h4>Artist(s)</h4>
+  <p>${storageObj[itemId].artists.map((e) => e.name).join(', ')}<p>
+  <h4>Album</h4>
+  <p>${storageObj[itemId].album.name}<p>
+  </li>`;
+}
+
 /* -------- Renderering functions -------- */
 
 // Render found results to song query
@@ -326,29 +353,7 @@ function renderResults(storageObj, renderSectionStr, generatorFunc) {
   const foundItemsIdList = Object.keys(storageObj);
   console.log(foundItemsIdList);
 
-  $(`${renderSectionStr}`).html(generatorFunc(storageObj));
-}
-
-function renderReccomendations(storedReccomendationsObj) {
-  const reccSongs = reccsJson.tracks;
-
-  $('#reccomendations-results-list').empty();
-
-  for (let i = 0; i < reccSongs.length; i++) {
-    $('#reccomendations-results-list').append(`
-    <li>
-    <h3>
-    <a 
-      href="${reccSongs[i].external_urls.spotify}" 
-      class="song-result" 
-      data-song-id="${reccSongs[i].id}">
-    ${reccSongs[i].name}</a></h3>
-    <h4>Artist(s)</h4>
-    <p>${reccSongs[i].artists.map((e) => e.name).join(', ')}<p>
-    <h4>Album</h4>
-    <p>${reccSongs[i].album.name}<p>
-    </li>`);
-  }
+  $(`${renderSectionStr}`).html(generateResultsList(storageObj, generatorFunc));
 }
 
 function adjustAtrrValues(attrObj) {
@@ -368,7 +373,7 @@ function renderSeedSelection(jQueryObj) {
   $('#seed-selection').append(jQueryObj);
   $('#search-results-list').empty();
 
-  renderAtrrValues(targetAttributes);
+  // renderAtrrValues(targetAttributes);
 }
 
 /* -------- Handlers -------- */
@@ -382,30 +387,36 @@ function handleKeywordSearchSubmit() {
 
     requestKeywordSearch(keywordQuery, [queryType])
       .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))
-      .then((storedResults) => renderResults(storedResults, '#search-results-list', generateResultsList));
+      .then((storedResults) => renderResults(storedResults, '#search-results-list', generateListArticle));
   });
 }
 // Listen for a selection from the results list
 function handleQueryResultClick() {
   $('#search-results-list').on('click', '.search-result-item', (e) => {
     e.preventDefault();
+    $('#search-results').find('.warning').remove();
     console.log(e.currentTarget);
+    // Spotify's API has a limit of 5 seeds for recommendations, value hard-coded here
+    if (Object.keys(seedSelection).length < 5) {
+      $(e.currentTarget).removeClass('search-result-item');
+      $(e.currentTarget).addClass('selected-item');
+      $(e.currentTarget).off();
 
-    $(e.currentTarget).removeClass('search-result-item');
-    $(e.currentTarget).addClass('selected-item');
-    $(e.currentTarget).off();
-
-    renderSeedSelection($(e.currentTarget));
-    const articleData = $(e.currentTarget).data();
-
-    requestItemObject(articleData.id, articleData.type)
-      .then((itemObj) => storeSeedItem(itemObj, $(e.currentTarget)))
-      .then((seedSelectionObj) => requestReccomendations(seedSelectionObj, targetAttributes))
-      .then((reccomendationsObj) => storeResults(reccomendations, reccomendationsObj.tracks))
-      .then((storedReccomendationsObj) => {
+      renderSeedSelection($(e.currentTarget));
+      const articleData = $(e.currentTarget).data();
+      requestItemObject(articleData.id, articleData.type)
+        .then((itemObj) => storeSeedItem(itemObj, $(e.currentTarget)))
+        .then((seedSelectionObj) => requestReccomendations(seedSelectionObj, targetAttributes))
+        .then((reccomendationsObj) => storeResults(recommendations, reccomendationsObj.tracks))
+        .then((storedReccomendationsObj) => {
         // renderSeedSelection(seedSelection[articleData.id]);
-        renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList);
-      });
+          renderAtrrValues(targetAttributes);
+
+          renderResults(storedReccomendationsObj, '#recommendations-results-list', generateRecommendationArticle);
+        });
+    } else {
+      $(e.currentTarget).before('<h3 class="warning">Delete one selection before adding another.</h3>');
+    }
   });
 }
 
@@ -418,9 +429,15 @@ function handleSelectedClick() {
     $(e.currentTarget).remove();
     deleteStoredItem(seedSelection, $(e.currentTarget).data().id);
 
-    requestReccomendations(seedSelection, targetAttributes)
-      .then((recommendationsObj) => storeResults(reccomendations, recommendationsObj.tracks))
-      .then((storedReccomendationsObj) => renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList));
+    if (Object.keys(seedSelection).length) {
+      requestReccomendations(seedSelection, targetAttributes)
+        .then((recommendationsObj) => storeResults(recommendations, recommendationsObj.tracks))
+        .then((storedReccomendationsObj) => {
+          renderResults(storedReccomendationsObj, '#recommendations-results-list', generateRecommendationArticle);
+        });
+    } else {
+      $('#recommendations-results-list').empty();
+    }
   });
 }
 
@@ -430,16 +447,16 @@ function handleCustomizeSubmit() {
     e.preventDefault();
     console.log($(e.currentTarget).serializeArray());
 
-    $(e.currentTarget).serializeArray().forEach((e) => {
-      targetAttributes[e.name].value = e.value;
+    $(e.currentTarget).serializeArray().forEach((i) => {
+      targetAttributes[i.name].value = i.value;
     });
 
     console.log(targetAttributes);
 
     requestReccomendations(seedSelection, targetAttributes)
-      .then((reccomendationsObj) => storeResults(reccomendations, reccomendationsObj.tracks))
+      .then((reccomendationsObj) => storeResults(recommendations, reccomendationsObj.tracks))
       .then((storedReccomendationsObj) => {
-        renderResults(storedReccomendationsObj, '#reccomendations-results-list', generateResultsList);
+        renderResults(storedReccomendationsObj, '#recommendations-results-list', generateRecommendationArticle);
       });
   });
 }
