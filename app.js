@@ -50,7 +50,7 @@ const recommendations = {};
 function requestAccessToken() {
   // Define request headers
   const authHeaders = new Headers({
-    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6MjMykMWE4ZDczZTRmNDY1OGE5NzZiZGZmM2E5ODk0YjU=',
+    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6MjMyMWE4ZDczZTRmNDY1OGE5NzZiZGZmM2E5ODk0YjU=',
     'Content-Type': 'application/x-www-form-urlencoded',
   });
   // Spotify's Api endpoint to get access token
@@ -73,7 +73,7 @@ function requestAccessToken() {
       throw new Error(`Server response: ${response.status}`);
     })
     .then((bodyJson) => bodyJson.access_token)
-    .catch((error) => console.log(error.message));
+    .catch((error) => console.error(error.message));
 }
 // General options for requests to Spotify's API
 function constructRequestOptions(token) {
@@ -108,8 +108,7 @@ function requestKeywordSearch(keywordQuery, type = ['track', 'artist']) {
   const queryUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(keywordQuery)}&type=${type.join()}`;
 
   return requestToApi(queryUrl)
-  // .then(response => console.log(response))
-    .catch((error) => console.log(`Received ${error.message} when searching for '${keywordQuery}'`));
+    .catch((error) => console.error(`Received ${error.message} when searching for '${keywordQuery}'`));
 }
 // Request Spotify catalog information for a single 'type' using the item's Spotify id
 // Returns a 'type' object (e.g. 'track', 'artist' or 'album')
@@ -117,7 +116,7 @@ function requestItemObject(itemId, type) {
   const queryUrl = `https://api.spotify.com/v1/${type}s/${itemId}`;
 
   return requestToApi(queryUrl)
-    .catch((error) => console.log(`Received ${error.message} when trying to get catalog information for ${itemId}.`));
+    .catch((error) => console.error(`Received ${error.message} when trying to get catalog information for ${itemId}.`));
 }
 
 function requestSongAttr(songId) {
@@ -137,17 +136,14 @@ function requestSongAttr(songId) {
         valence: bodyJson.valence,
         tempo: bodyJson.tempo,
       };
-      console.log(bodyJson);
       return songAttributes;
     })
-    .catch((error) => console.log(`Got ${error.message} when getting song reccomendations`));
+    .catch((error) => console.error(`Got ${error.message} when getting song reccomendations`));
 }
 
 function requestReccomendations(seedSelectionObj, attrObj) {
-  console.log(seedSelectionObj);
   const endpoint = 'https://api.spotify.com/v1/recommendations';
   const items = { artists: [], tracks: [] };
-  // Object.keys(seedSelectionObj).forEach((e) => console.log(seedSelection[e]));
   Object.keys(seedSelectionObj).forEach((e) => {
     if (seedSelectionObj[e].type === 'artist') {
       items.artists.push(seedSelectionObj[e].id);
@@ -167,18 +163,14 @@ function requestReccomendations(seedSelectionObj, attrObj) {
   Object.keys(attrObj).forEach((e) => {
     attributes.push(`target_${e}=${attrObj[e].value}`);
   });
-  console.log(items);
-  console.log(seeds.join('&'));
-  console.log(attributes.join('&'));
 
   // seed_tracks(comma separated) &seed_artists(comma separated)
   // &target_(attr)
   const queryUrl = `${endpoint}?${seeds.join('&')}&${attributes.join('&')}`;
 
-  console.log(queryUrl);
   // Return body json from query response
   return requestToApi(queryUrl)
-    .catch((error) => console.log(`Got ${error.message} when getting song reccomendations`));
+    .catch((error) => console.error(`Got ${error.message} when getting song reccomendations`));
 }
 
 /* -------- Data storage functions -------- */
@@ -210,22 +202,24 @@ function avgAttrValues(seedSelectionStorage) {
   const storageIterator = Object.keys(seedSelectionStorage);
   const attrIterator = Object.keys(targetAttributes);
   const averagedValues = Object.create(targetAttributes);
+  const addedValuesIterator = [];
   let addedItems = 0;
   attrIterator.forEach((attr) => {
     averagedValues[attr] = 0;
   });
 
-  console.log(targetAttributes);
   storageIterator.forEach((item) => {
     if (seedSelectionStorage[item].attributes) {
       addedItems++;
       attrIterator.forEach((attr) => {
-        console.log(seedSelectionStorage[item].attributes[attr]);
-        averagedValues[attr] += seedSelectionStorage[item].attributes[attr];
+        if (seedSelectionStorage[item].attributes[attr] !== undefined) {
+          averagedValues[attr] += seedSelectionStorage[item].attributes[attr];
+          addedValuesIterator.push(attr);
+        }
       });
     }
 
-    attrIterator.forEach((attr) => {
+    addedValuesIterator.forEach((attr) => {
       const avgValue = averagedValues[attr] / addedItems;
       if (avgValue < 0) {
         targetAttributes[attr].value = -Math.abs(
@@ -233,7 +227,6 @@ function avgAttrValues(seedSelectionStorage) {
         );
       } else {
         targetAttributes[attr].value = Number(`${Math.round(`${avgValue}e4`)}e-4`);
-        console.log(targetAttributes[attr].value);
       }
     });
   });
@@ -250,14 +243,12 @@ function storeSeedItem(itemObj, itemArticleObj) {
       .then((attributesObj) => {
         seedSelection[itemId].attributes = attributesObj;
         // Add popularity to attributes to have it available for customization
-        // seedSelection[itemId].attributes.popularity = itemObj.popularity;
+        seedSelection[itemId].attributes.popularity = itemObj.popularity;
         return seedSelection;
       })
       .then((seedSelectionStorage) => avgAttrValues(seedSelectionStorage));
   } else {
     seedSelection[itemId].attributes = { popularity: 0 };
-    console.log(itemObj.popularity);
-    console.log(seedSelection[itemId])
     seedSelection[itemId].attributes.popularity = itemObj.popularity;
     avgAttrValues(seedSelection);
   }
@@ -350,9 +341,6 @@ function generateRecommendationArticle(storageObj, itemId) {
 
 // Render found results to song query
 function renderResults(storageObj, renderSectionStr, generatorFunc) {
-  const foundItemsIdList = Object.keys(storageObj);
-  console.log(foundItemsIdList);
-
   $(`${renderSectionStr}`).html(generateResultsList(storageObj, generatorFunc));
 }
 
@@ -395,7 +383,6 @@ function handleQueryResultClick() {
   $('#search-results-list').on('click', '.search-result-item', (e) => {
     e.preventDefault();
     $('#search-results').find('.warning').remove();
-    console.log(e.currentTarget);
     // Spotify's API has a limit of 5 seeds for recommendations, value hard-coded here
     if (Object.keys(seedSelection).length < 5) {
       $(e.currentTarget).removeClass('search-result-item');
@@ -424,10 +411,11 @@ function handleQueryResultClick() {
 function handleSelectedClick() {
   $('#seed-selection').on('click', '.selected-item', (e) => {
     e.preventDefault();
-    console.log($(e.currentTarget).data());
 
     $(e.currentTarget).remove();
     deleteStoredItem(seedSelection, $(e.currentTarget).data().id);
+    avgAttrValues(seedSelection);
+    renderAtrrValues(targetAttributes);
 
     if (Object.keys(seedSelection).length) {
       requestReccomendations(seedSelection, targetAttributes)
@@ -445,13 +433,10 @@ function handleSelectedClick() {
 function handleCustomizeSubmit() {
   $('#customize-recommendations').on('submit', (e) => {
     e.preventDefault();
-    console.log($(e.currentTarget).serializeArray());
 
     $(e.currentTarget).serializeArray().forEach((i) => {
       targetAttributes[i.name].value = i.value;
     });
-
-    console.log(targetAttributes);
 
     requestReccomendations(seedSelection, targetAttributes)
       .then((reccomendationsObj) => storeResults(recommendations, reccomendationsObj.tracks))
