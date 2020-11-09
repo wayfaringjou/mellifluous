@@ -50,7 +50,7 @@ const recommendations = {};
 function requestAccessToken() {
   // Define request headers
   const authHeaders = new Headers({
-    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6MjMyMWE4ZDczZTRmNDY1OGE5NzZiZGZmM2E5ODk0YjU=',
+    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6NzNiMTYwZjQ0ZoTQ3NDhkYmE4NDgxZWY1ZGViMTBmMGU=',
     'Content-Type': 'application/x-www-form-urlencoded',
   });
   // Spotify's Api endpoint to get access token
@@ -221,7 +221,10 @@ function avgAttrValues(seedSelectionStorage) {
 
     addedValuesIterator.forEach((attr) => {
       const avgValue = averagedValues[attr] / addedItems;
-      if (avgValue < 0) {
+      // 'Popularity' attribute can't be a decimal
+      if (attr === 'popularity') {
+        targetAttributes[attr].value = Number(`${Math.round(`${avgValue}e0`)}e-0`);
+      } else if (avgValue < 0) {
         targetAttributes[attr].value = -Math.abs(
           Number(`${Math.round(`${avgValue}e4`)}e-4`),
         );
