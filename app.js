@@ -50,7 +50,7 @@ const recommendations = {};
 function requestAccessToken() {
   // Define request headers
   const authHeaders = new Headers({
-    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6NzNiMTYwZjQ0ZoTQ3NDhkYmE4NDgxZWY1ZGViMTBmMGU=',
+    Authorization: 'Basic MTdlYzc2MmQyNDY1NDFjY2E5Mzg5OTk4MTAxMTZkN2Y6NzNiMTYwZjQ0ZTQ3NDhkYmE4NDgxZWY1ZGViMTBmMGU=',
     'Content-Type': 'application/x-www-form-urlencoded',
   });
   // Spotify's Api endpoint to get access token
@@ -138,10 +138,10 @@ function requestSongAttr(songId) {
       };
       return songAttributes;
     })
-    .catch((error) => console.error(`Got ${error.message} when getting song reccomendations`));
+    .catch((error) => console.error(`Got ${error.message} when getting song recommendations`));
 }
 
-function requestReccomendations(seedSelectionObj, attrObj) {
+function requestRecommendations(seedSelectionObj, attrObj) {
   const endpoint = 'https://api.spotify.com/v1/recommendations';
   const items = { artists: [], tracks: [] };
   Object.keys(seedSelectionObj).forEach((e) => {
@@ -170,21 +170,21 @@ function requestReccomendations(seedSelectionObj, attrObj) {
 
   // Return body json from query response
   return requestToApi(queryUrl)
-    .catch((error) => console.error(`Got ${error.message} when getting song reccomendations`));
+    .catch((error) => console.error(`Got ${error.message} when getting song recommendations`));
 }
 
 /* -------- Data storage functions -------- */
 
-// Delete an item from search results, seeds or reccomendations object
+// Delete an item from search results, seeds or recommendations object
 function deleteStoredItem(storageObj, itemId) {
   return delete storageObj[itemId];
 }
-// Clear search results, seeds or reccomendations object
+// Clear search results, seeds or recommendations object
 function clearStoredObj(storageObj) {
   Object.keys(storageObj).forEach((e) => delete storageObj[e]);
 }
 
-// Store search results or reccomendations
+// Store search results or recommendations
 function storeResults(storageObj, dataArray) {
   // Clear stored keys first if there are any (does this go here?)
   if (Object.keys(storageObj).length !== 0) {
@@ -236,7 +236,7 @@ function avgAttrValues(seedSelectionStorage) {
   return targetAttributes;
 }
 
-// Store an item object in a object of seeds selected for reccomendations
+// Store an item object in a object of seeds selected for recommendations
 function storeSeedItem(itemObj, itemArticleObj) {
   const itemId = itemObj.id;
   seedSelection[itemId] = itemObj;
@@ -266,13 +266,13 @@ function generateListArticle(storageObj, itemId) {
   let caption;
   if (itemObj.type === 'track') {
     img = itemObj.album.images.length
-      ? `<img src="${itemObj.album.images[itemObj.album.images.length - 1].url}" alt="'${itemObj.album.name}' album cover." />`
-      : '<img src="" alt="No image found" />';
+      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." />`
+      : '<img src="images/noimage.png" alt="No image found" />';
     caption = itemObj.artists.map((e) => e.name).join(', ');
   } else {
     img = itemObj.images.length
-      ? `<img src="${itemObj.images[itemObj.images.length - 1].url}" alt="${itemObj.name}" />`
-      : '<img src="" alt="No image found" />';
+      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" />`
+      : '<img src="images/noimage.png" alt="No image found" />';
     if (itemObj.genres.length) {
       caption = itemObj.genres.join(', ');
     }
@@ -280,15 +280,15 @@ function generateListArticle(storageObj, itemId) {
 
   return `
   <li>
-    <article class="search-result-item" data-id="${itemId}" data-type="${itemObj.type}">
-      <a href="#" style="display: block; background-color: lightgray">
-        <div>
+  <a href="#">
+    <article class="search-result-item flex box" data-id="${itemId}" data-type="${itemObj.type}">
            ${img}
+        <section class="caption">
            <h3>${itemObj.name}</h3>
            <h4>${caption || ''}</h4>
-        </div>
-      </a>
+        </section>
     </article>
+  </a>
   </li>`;
 }
 
@@ -300,6 +300,7 @@ function generateResultsList(storageObj, generatorFunc) {
 
 function generateRange(attrObj, attrKey) {
   return `
+  <div class="flex flex-column">
   <label for="${attrKey}">${attrKey}</label>
   <input
     type="range"
@@ -309,7 +310,8 @@ function generateRange(attrObj, attrKey) {
     max="${attrObj[attrKey].max}"
     value="${attrObj[attrKey].value}"
     step="${attrObj[attrKey].step}"
-  />`;
+  />
+  </div>`;
 }
 
 function generateAttributeRanges(attrObj) {
@@ -325,18 +327,32 @@ function generateAttributeRanges(attrObj) {
 }
 
 function generateRecommendationArticle(storageObj, itemId) {
+  const itemObj = storageObj[itemId];
+  const img = itemObj.album.images.length
+    ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." />`
+    : '<img src="images/noimage.png" alt="No image found" />';
+
   return `
+
   <li>
+  <article class="flex">
+  <section class="album-img">
+  ${img}
+  </section>
+  <section>
   <h3>
   <a 
-    href="${storageObj[itemId].external_urls.spotify}" 
+    href="${itemObj.external_urls.spotify}"
+    target="_blank" 
     class="song-result" 
-    data-song-id="${storageObj[itemId].id}">
-  ${storageObj[itemId].name}</a></h3>
+    data-song-id="${itemObj.id}">
+  ${itemObj.name}</a></h3>
   <h4>Artist(s)</h4>
-  <p>${storageObj[itemId].artists.map((e) => e.name).join(', ')}<p>
+  <p>${itemObj.artists.map((e) => e.name).join(', ')}<p>
   <h4>Album</h4>
-  <p>${storageObj[itemId].album.name}<p>
+  <p>${itemObj.album.name}<p>
+  </section>
+  </article>
   </li>`;
 }
 
@@ -361,7 +377,7 @@ function renderAtrrValues(attrObj) {
 }
 
 function renderSeedSelection(jQueryObj) {
-  $('#seed-selection').append(jQueryObj);
+  $('#seed-selection-list').append(jQueryObj);
   $('#search-results-list').empty();
 
   // renderAtrrValues(targetAttributes);
@@ -378,7 +394,10 @@ function handleKeywordSearchSubmit() {
 
     requestKeywordSearch(keywordQuery, [queryType])
       .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))
-      .then((storedResults) => renderResults(storedResults, '#search-results-list', generateListArticle));
+      .then((storedResults) => {
+        renderResults(storedResults, '#search-results-list', generateListArticle);
+        $('#search-results').removeClass('hidden');
+      });
   });
 }
 // Listen for a selection from the results list
@@ -386,26 +405,32 @@ function handleQueryResultClick() {
   $('#search-results-list').on('click', '.search-result-item', (e) => {
     e.preventDefault();
     $('#search-results').find('.warning').remove();
-    // Spotify's API has a limit of 5 seeds for recommendations, value hard-coded here
-    if (Object.keys(seedSelection).length < 5) {
+    const articleData = $(e.currentTarget).data();
+
+    if (Object.keys(seedSelection).includes(articleData.id)) {
+      $(e.currentTarget).before('<h3 class="warning">Item already selected.</h3>');
+    } else if (Object.keys(seedSelection).length >= 5) {
+      // Spotify's API has a limit of 5 seeds for recommendations, value hard-coded here
+      $(e.currentTarget).before('<h3 class="warning">Delete one selection before adding another.</h3>');
+    } else {
       $(e.currentTarget).removeClass('search-result-item');
       $(e.currentTarget).addClass('selected-item');
       $(e.currentTarget).off();
 
-      renderSeedSelection($(e.currentTarget));
-      const articleData = $(e.currentTarget).data();
+      renderSeedSelection($(e.currentTarget).parent());
+      $('#search-results').addClass('hidden');
+      $('#seed-selection').removeClass('hidden');
       requestItemObject(articleData.id, articleData.type)
         .then((itemObj) => storeSeedItem(itemObj, $(e.currentTarget)))
-        .then((seedSelectionObj) => requestReccomendations(seedSelectionObj, targetAttributes))
-        .then((reccomendationsObj) => storeResults(recommendations, reccomendationsObj.tracks))
-        .then((storedReccomendationsObj) => {
-        // renderSeedSelection(seedSelection[articleData.id]);
+        .then((seedSelectionObj) => requestRecommendations(seedSelectionObj, targetAttributes))
+        .then((recommendationsObj) => storeResults(recommendations, recommendationsObj.tracks))
+        .then((storedRecommendationsObj) => {
+          // renderSeedSelection(seedSelection[articleData.id]);
           renderAtrrValues(targetAttributes);
 
-          renderResults(storedReccomendationsObj, '#recommendations-results-list', generateRecommendationArticle);
+          renderResults(storedRecommendationsObj, '#recommendations-results-list', generateRecommendationArticle);
+          $('#recommendations').removeClass('hidden');
         });
-    } else {
-      $(e.currentTarget).before('<h3 class="warning">Delete one selection before adding another.</h3>');
     }
   });
 }
@@ -421,13 +446,15 @@ function handleSelectedClick() {
     renderAtrrValues(targetAttributes);
 
     if (Object.keys(seedSelection).length) {
-      requestReccomendations(seedSelection, targetAttributes)
+      requestRecommendations(seedSelection, targetAttributes)
         .then((recommendationsObj) => storeResults(recommendations, recommendationsObj.tracks))
-        .then((storedReccomendationsObj) => {
-          renderResults(storedReccomendationsObj, '#recommendations-results-list', generateRecommendationArticle);
+        .then((storedRecommendationsObj) => {
+          renderResults(storedRecommendationsObj, '#recommendations-results-list', generateRecommendationArticle);
         });
     } else {
       $('#recommendations-results-list').empty();
+      $('#seed-selection').addClass('hidden');
+      $('#recommendations').addClass('hidden');
     }
   });
 }
@@ -441,10 +468,10 @@ function handleCustomizeSubmit() {
       targetAttributes[i.name].value = i.value;
     });
 
-    requestReccomendations(seedSelection, targetAttributes)
-      .then((reccomendationsObj) => storeResults(recommendations, reccomendationsObj.tracks))
-      .then((storedReccomendationsObj) => {
-        renderResults(storedReccomendationsObj, '#recommendations-results-list', generateRecommendationArticle);
+    requestRecommendations(seedSelection, targetAttributes)
+      .then((recommendationsObj) => storeResults(recommendations, recommendationsObj.tracks))
+      .then((storedRecommendationsObj) => {
+        renderResults(storedRecommendationsObj, '#recommendations-results-list', generateRecommendationArticle);
       });
   });
 }
