@@ -21,15 +21,15 @@
   </head>
   <body>
     <div class="container">
-      <header>
-        <h1>Mellifluous</h1>
+      <header class="flex flex-column flex-center">
+        <img src="images/logo.svg" class="logo" alt="Mellifluous" />
+        <h1>Find new tracks based on the music you love!</h1>
       </header>
-      <main>
+      <main class="flex flex-column flex-center">
         <section id="search-form">
-          <h2>Find new tracks based on the music you love!</h2>
           <form id="keyword-search" class="box">
             <fieldset>
-              <div class="flex flex-column">
+              <div class="flex flex-column flex-center">
                 <legend><h3>First, let's find something you like.</h3></legend>
                 <p>Enter a name to search and select between artist or song.</p>
                 <div class="flex flex-column">
@@ -39,6 +39,7 @@
                     type="text"
                     name="keyword-search-input"
                     id="keyword-search-input"
+                    class="shadow"
                   />
                 </div>
                 <div>
@@ -58,7 +59,9 @@
                   />
                   <label for="search-type-artist">Artist</label>
                 </div>
-                <button type="submit" id="song-search-submit">Search</button>
+                <button type="submit" id="song-search-submit" class="btn shadow">
+                  Search
+                </button>
               </div>
             </fieldset>
           </form>

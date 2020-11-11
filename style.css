@@ -19,9 +19,14 @@ input[type="text"],
 textarea,
 button {
   border: 0;
-  padding: 4px;
-  margin: 12px;
+  padding: 4px 0;
+  margin: 12px 0;
   border-radius: 4px;
+}
+
+input[type="text"] {
+  padding: 16px;
+  width: 100%;
 }
 
 ul {
@@ -51,14 +56,18 @@ img {
   align-items: flex-start;
 }
 
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
 .box {
-  background-color: #c3c3c3;
   border-radius: 4px;
   border: 0;
-  padding: 8px;
+  padding: 8px 0px;
   width: 200px;
   height: 200px;
-  margin: 8px;
+  margin: 8px 0px;
 }
 
 .box img {
@@ -77,13 +86,37 @@ img {
   color: #ffffff;
 }
 
+.btn {
+  background-color: #1b66b5;
+  color: white;
+  padding: 8px 32px;
+  border-radius: 16px;
+}
+
+.shadow {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
 .hidden {
   display: none;
 }
-
+.logo {
+  max-width: 600px;
+  align-self: center;
+}
 .album-img {
   max-width: 124px;
   margin: 16px;
+}
+
+#search-form {
+  background-image: url(images/shapes.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-y: 128px;
 }
 
 #recommendations-results-list > li > article > section {
