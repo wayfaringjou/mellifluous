@@ -112,11 +112,17 @@ img {
   margin: 16px;
 }
 
-#search-form {
+main {
   background-image: url(images/shapes.svg);
   background-size: contain;
   background-repeat: no-repeat;
+  background-position-x: center;
   background-position-y: 128px;
+  min-height: 720px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 #recommendations-results-list > li > article > section {
