@@ -200,14 +200,16 @@ redundant margins in first or last element of a set. */
   display: flex;
 }
 
+.flex-column {
+  flex-flow:column;
+}
+
 .collapse {
   flex-flow: row wrap;
 }
-
-
-  flex: 0 0 25%;
-
-
+.flex-wrap-fifth{
+flex: 0 0 20%;
+}
 .float-lft {
   float: left;
 }
@@ -337,8 +339,6 @@ redundant margins in first or last element of a set. */
   overflow: hidden;
   border-radius: 4px;
   max-height: 12rem;
-  margin: var(--s400);
-
 }
 
 .cl-box .inner-box {
@@ -348,10 +348,22 @@ redundant margins in first or last element of a set. */
 .cl-box .caption {
   top: 0;
   position: absolute;
+  padding: 4px;
   width: 100%;
-  height:100%;
+  height: 100%;
   background-color: rgba(var(--primary), 0.305);
   color: rgb(var(--light));
+}
+.search-list-element {
+  margin:var(--s300);
+
+}
+
+.selected-list-element {
+  padding: 4px;
+}
+.selected-list-element h3 {
+  font-size: var(--s300);
 }
 
 /* TYPOGRAPHY */

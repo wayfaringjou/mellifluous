@@ -274,24 +274,25 @@ function generateListArticle(storageObj, itemId) {
       ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" class="width-full"/>`
       : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
     if (itemObj.genres.length) {
-      //caption = itemObj.genres.join(', ');
-      caption = itemObj.genres.map((e) => `<span class="pill">${e}</span>`).join('');
+      // caption = itemObj.genres.join(', ');
+      caption = itemObj.genres.map((e) => `<span class="pill">${e}</span>`)
+        .splice(0, 3).join('');
     }
   }
 
   return `
-  <li>
-  <a href="#">
+  <li class="search-list-element flex-wrap-fifth">
     <article class="search-result-item cl-box" data-id="${itemId}" data-type="${itemObj.type}">
         <div class="inner-box">    
          ${img}
         <section class="caption">
+          <a href="#">
            <h3>${itemObj.name}</h3>
+          </a>
            <h4>${caption || ''}</h4>
         </section>
         </div>
     </article>
-  </a>
   </li>`;
 }
 
@@ -303,7 +304,7 @@ function generateResultsList(storageObj, generatorFunc) {
 
 function generateRange(attrObj, attrKey) {
   return `
-  <div class="flex flex-column">
+  <div class="flex flex-column flex-wrap-fifth">
   <label for="${attrKey}">${attrKey}</label>
   <input
     type="range"
@@ -326,6 +327,8 @@ function generateAttributeRanges(attrObj) {
   Customize
   </button>`);
 
+  attrRanges.unshift('<div class="collapse">');
+  attrRanges.push('</div>');
   return attrRanges.join('');
 }
 
@@ -417,7 +420,10 @@ function handleQueryResultClick() {
       $(e.currentTarget).before('<h3 class="warning">Delete one selection before adding another.</h3>');
     } else {
       $(e.currentTarget).removeClass('search-result-item');
-      $(e.currentTarget).addClass('selected-item width-fifth');
+      $(e.currentTarget).addClass('selected-item');
+      $(e.currentTarget).parent().removeClass('search-list-element');
+      $(e.currentTarget).parent().addClass('selected-list-element');
+      $(e.currentTarget).find('.caption').find('h4').addClass('hidden');
       $(e.currentTarget).off();
 
       renderSeedSelection($(e.currentTarget).parent());
@@ -443,7 +449,7 @@ function handleSelectedClick() {
   $('#seed-selection').on('click', '.selected-item', (e) => {
     e.preventDefault();
 
-    $(e.currentTarget).remove();
+    $(e.currentTarget).parent().remove();
     deleteStoredItem(seedSelection, $(e.currentTarget).data().id);
     avgAttrValues(seedSelection);
     renderAtrrValues(targetAttributes);
