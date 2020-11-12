@@ -105,7 +105,8 @@ function requestToApi(endpointUrl) {
 // Possible types: album , artist, playlist, track, show and episode.
 // Default is track and artist.
 function requestKeywordSearch(keywordQuery, type = ['track', 'artist']) {
-  const queryUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(keywordQuery)}&type=${type.join()}`;
+  // Hard coded a limit of 8 results, should be enough
+  const queryUrl = `https://api.spotify.com/v1/search?q=${encodeURIComponent(keywordQuery)}&type=${type.join()}&limit=8`;
 
   return requestToApi(queryUrl)
     .catch((error) => console.error(`Received ${error.message} when searching for '${keywordQuery}'`));
@@ -266,32 +267,33 @@ function generateListArticle(storageObj, itemId) {
   let caption;
   if (itemObj.type === 'track') {
     img = itemObj.album.images.length
-      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." class="width-full" />`
-      : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
+      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover."  />`
+      : '<img src="images/noimage.png" alt="No image found" />';
     caption = itemObj.artists.map((e) => e.name).join(', ');
   } else {
     img = itemObj.images.length
-      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" class="width-full"/>`
-      : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
+      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" "/>`
+      : '<img src="images/noimage.png" alt="No image found" />';
     if (itemObj.genres.length) {
       // caption = itemObj.genres.join(', ');
-      caption = itemObj.genres.map((e) => `<span class="pill">${e}</span>`)
+      caption = itemObj.genres.map((e) => `<span class="pill primary">${e}</span>`)
         .splice(0, 3).join('');
     }
   }
 
   return `
   <li class="search-list-element flex-wrap-fifth">
-    <article class="search-result-item cl-box" data-id="${itemId}" data-type="${itemObj.type}">
-        <div class="inner-box">    
+    <article class="search-result-item image-box" data-id="${itemId}" data-type="${itemObj.type}">
+        <section class="img-wrapper">    
          ${img}
+          <section class="overlay easing-gradient-tint"></section>
+        </section>
         <section class="caption">
           <a href="#">
            <h3>${itemObj.name}</h3>
           </a>
            <h4>${caption || ''}</h4>
         </section>
-        </div>
     </article>
   </li>`;
 }
@@ -314,6 +316,7 @@ function generateRange(attrObj, attrKey) {
     max="${attrObj[attrKey].max}"
     value="${attrObj[attrKey].value}"
     step="${attrObj[attrKey].step}"
+    class="width-eight"
   />
   </div>`;
 }
@@ -322,30 +325,31 @@ function generateAttributeRanges(attrObj) {
   const attrKeysArray = Object.keys(attrObj);
   const attrRanges = attrKeysArray.map((attrKey) => generateRange(targetAttributes, attrKey));
 
+  attrRanges.unshift('<div class="flex collapse">');
+  attrRanges.push('</div>');
+
   attrRanges.push(`
   <button type="submit" id="customize-recommendations-submit">
   Customize
   </button>`);
 
-  attrRanges.unshift('<div class="collapse">');
-  attrRanges.push('</div>');
   return attrRanges.join('');
 }
 
 function generateRecommendationArticle(storageObj, itemId) {
   const itemObj = storageObj[itemId];
   const img = itemObj.album.images.length
-    ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." />`
-    : '<img src="images/noimage.png" alt="No image found" />';
+    ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." class="width-full"/>`
+    : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
 
   return `
 
   <li>
-  <article class="flex">
-  <section class="album-img">
+  <article class="flex slab">
+  <section class="album-img img-wrapper width-fifth gap-300-h">
   ${img}
   </section>
-  <section>
+  <section class="slab-content width-eight">
   <h3>
   <a 
     href="${itemObj.external_urls.spotify}"
@@ -353,9 +357,10 @@ function generateRecommendationArticle(storageObj, itemId) {
     class="song-result" 
     data-song-id="${itemObj.id}">
   ${itemObj.name}</a></h3>
-  <h4>Artist(s)</h4>
+
+  <h4 class="pill secondary">Artist(s)</h4>
   <p>${itemObj.artists.map((e) => e.name).join(', ')}<p>
-  <h4>Album</h4>
+  <h4 class="pill secondary">Album</h4>
   <p>${itemObj.album.name}<p>
   </section>
   </article>

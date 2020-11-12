@@ -27,7 +27,7 @@
   </head>
   <body>
     <header>
-      <section id="logo" class="pad-300-v inner-wrapper-loose">
+      <section id="logo" class="pad-800-v inner-wrapper-loose">
         <img src="images/logo.svg" alt="Mellifluous" class="width-full" />
       </section>
 
@@ -55,7 +55,7 @@
                   checked
                   class=""
                 />
-                <label for="search-type-song" class="secondary-txt text-500">Song</label>
+                <label for="search-type-song" class="primary-txt text-500">Song</label>
                 <input
                   type="radio"
                   name="search-type"
@@ -63,7 +63,7 @@
                   value="artist"
                   class=""
                 />
-                <label for="search-type-artist" class="secondary-txt text-500">Artist</label>
+                <label for="search-type-artist" class="primary-txt text-500">Artist</label>
               </div>
               <label for="keyword-search-input" class="visually-hidden"
                 >Enter song or artist's name</label
@@ -80,7 +80,7 @@
                 <button
                   type="submit"
                   id="song-search-submit"
-                  class="width-quarter pad-base-v secondary text-500 uppercase"
+                  class="width-quarter pad-base-v primary text-500 uppercase"
                 >
                   Search
                 </button>
@@ -105,10 +105,11 @@
             </fieldset>
           </form>
         </section>
-        <section id="recommendations-results">
+        <section id="recommendations-results" class="width-full gap-600-v">
+
           <h2>Recommendations:</h2>
 
-          <ul id="recommendations-results-list"></ul>
+          <ul id="recommendations-results-list" class="rows"></ul>
         </section>
       </section>
     </main>
