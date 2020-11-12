@@ -3,11 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
+    <!--
+    link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
       integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
       crossorigin="anonymous"
+     -->
+    <!-- Modern reset from: https://github.com/hankchizljaw/modern-css-reset -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/modern-css-reset/dist/reset.min.css"
     />
     <link rel="stylesheet" href="style.css" type="text/css" />
     <!-- jQuery CDN -->
@@ -20,76 +26,91 @@
     <title>Mellifluous</title>
   </head>
   <body>
-    <div class="container">
-      <header class="flex flex-column flex-center">
-        <img src="images/logo.svg" class="logo" alt="Mellifluous" />
-        <h1>Find new tracks based on the music you love!</h1>
-      </header>
-      <main class="">
-        <section id="search-form">
-          <form id="keyword-search" class="box">
-            <fieldset>
-              <div class="flex flex-column flex-center">
-                <legend><h3>First, let's find something you like.</h3></legend>
-                <p>Enter a name to search and select between artist or song.</p>
-                <div class="flex flex-column">
-                  <label for="keyword-search-input">Name</label>
-                  <input
-                    required
-                    type="text"
-                    name="keyword-search-input"
-                    id="keyword-search-input"
-                    class="shadow"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    name="search-type"
-                    id="search-type-song"
-                    value="track"
-                    checked
-                  />
-                  <label for="search-type-song">Song</label>
-                  <input
-                    type="radio"
-                    name="search-type"
-                    id="search-type-artist"
-                    value="artist"
-                  />
-                  <label for="search-type-artist">Artist</label>
-                </div>
-                <button type="submit" id="song-search-submit" class="btn shadow">
+    <header>
+      <section id="logo" class="pad-300-v inner-wrapper-loose">
+        <img src="images/logo.svg" alt="Mellifluous" class="width-full" />
+      </section>
+
+      <section
+        id="mellifluous-intro"
+        class="inner-wrapper pad-base-h gap-800-v"
+      >
+        <h1>Discover new tracks in tune with the music you love!</h1>
+      </section>
+    </header>
+    <main>
+      <article id="search-form" class="pad-base-h pad-base-v gap-base-v">
+        <form id="keyword-search" class="inner-wrapper">
+          <fieldset aria-labelledby="search-action-call">
+            <h2 id="search-action-call">
+              First, let's find something you like.
+            </h2>
+            <section id="search-prompt" class="gap-base-v width-full">
+              <div>
+                <input
+                  type="radio"
+                  name="search-type"
+                  id="search-type-song"
+                  value="track"
+                  checked
+                />
+                <label for="search-type-song">Song</label>
+                <input
+                  type="radio"
+                  name="search-type"
+                  id="search-type-artist"
+                  value="artist"
+                />
+                <label for="search-type-artist">Artist</label>
+              </div>
+              <label for="keyword-search-input" class="visually-hidden"
+                >Song or artist's name</label
+              >
+              <div class="search-box shadow flex">
+                <input
+                  required
+                  placeholder="Song or artist's name"
+                  type="text"
+                  name="keyword-search-input"
+                  id="keyword-search-input"
+                  class="width-eight pad-base-h pad-base-v"
+                />
+                <button
+                  type="submit"
+                  id="song-search-submit"
+                  class="width-fifth secondary"
+                >
                   Search
                 </button>
               </div>
+            </section>
+          </fieldset>
+        </form>
+      </article>
+      <section id="search-results" class="hidden">
+        <h2>Found:</h2>
+        <ul id="search-results-list" class="flex"></ul>
+      </section>
+      <section id="seed-selection" class="hidden">
+        <h2>Selected:</h2>
+        <ul id="seed-selection-list" class="flex"></ul>
+      </section>
+      <section id="recommendations" class="flex hidden">
+        <section id="customization-form">
+          <form id="customize-recommendations" class="box">
+            <fieldset>
+              <legend><h3>Customize your recommendations</h3></legend>
             </fieldset>
           </form>
         </section>
-        <section id="search-results" class="hidden">
-          <h2>Found:</h2>
-          <ul id="search-results-list" class="flex"></ul>
-        </section>
-        <section id="seed-selection" class="hidden">
-          <h2>Selected:</h2>
-          <ul id="seed-selection-list" class="flex"></ul>
-        </section>
-        <section id="recommendations" class="flex hidden">
-          <section id="customization-form">
-            <form id="customize-recommendations" class="box">
-              <fieldset>
-                <legend><h3>Customize your recommendations</h3></legend>
-              </fieldset>
-            </form>
-          </section>
-          <section id="recommendations-results">
-            <h2>Recommendations:</h2>
+        <section id="recommendations-results">
+          <h2>Recommendations:</h2>
 
-            <ul id="recommendations-results-list"></ul>
-          </section>
+          <ul id="recommendations-results-list"></ul>
         </section>
-      </main>
-    </div>
+      </section>
+    </main>
+    <footer></footer>
     <!-- Load app script -->
     <script src="app.js"></script>
   </body>

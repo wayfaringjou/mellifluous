@@ -1,5 +1,301 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Raleway&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Karla&display=swap");
 
+/* Design Tokens */
+
+:root {
+  /* Pallette */
+  --primary: 27, 102, 181;
+  --secondary: 212, 0, 170;
+  --tertiary: 42, 255, 213;
+  --dark: 0, 0, 0;
+  --light: 255, 255, 255;
+  --grey: 240, 240, 240;
+
+  /* Font */
+  --fnt-heading: "Poppins", sans-serif;
+  --fnt-body: "Karla", sans-serif;
+
+  /* Scale */
+
+  /* Major third modular scale for text and spacing. 
+  Formulas from: https://every-layout.dev/rudiments/modular-scale/
+  */
+  /* Growth ratio */
+  --ratio: 1.25;
+  /* Scales */
+  --s900: calc(var(--s800) * var(--ratio));
+  --s800: calc(var(--s700) * var(--ratio));
+  --s700: calc(var(--s600) * var(--ratio));
+  --s600: calc(var(--s500) * var(--ratio));
+  --s500: calc(var(--s400) * var(--ratio));
+  /* Base */
+  --s400: 1rem;
+  --s300: calc(var(--s400) / var(--ratio));
+}
+
+/* Global */
+body {
+  font-family: var(--fnt-body);
+  font-weight: 600;
+  line-height: 1.75rem;
+  color: rgb(var(--dark));
+  background-color: rgb(var(--grey));
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fnt-body);
+  font-weight: 600;
+  line-height: 1.2em;
+}
+
+h1 {
+  font-size: var(--s900);
+  letter-spacing: -0.09375rem;
+}
+
+h2 {
+  font-size: var(--s800);
+  letter-spacing: -0.03125rem;
+}
+
+h3 {
+  font-size: var(--s700);
+  letter-spacing: 0;
+}
+
+h4 {
+  font-size: var(--s600);
+  letter-spacing: 0.015625em;
+}
+
+h5 {
+  font-size: var(--s500);
+  letter-spacing: 0;
+}
+
+small {
+  font-size: var(--s300);
+  letter-spacing: 0.025rem;
+}
+
+a {
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+fieldset {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+/* Composition */
+
+/* Spacing */
+/* Horizontal paddings */
+.pad-300-h {
+  padding-left: var(--s300);
+  padding-right: var(--s300);
+}
+.pad-base-h {
+  padding-left: var(--s400);
+  padding-right: var(--s400);
+}
+.pad-600-h {
+  padding-left: var(--s600);
+  padding-right: var(--s600);
+}
+.pad-800-h {
+  padding-left: var(--s600);
+  padding-right: var(--s600);
+}
+
+/* Vertical paddings */
+.pad-300-v {
+  padding-top: var(--s300);
+  padding-bottom: var(--s300);
+}
+.pad-base-v {
+  padding-top: var(--s400);
+  padding-bottom: var(--s400);
+}
+.pad-600-v {
+  padding-top: var(--s600);
+  padding-bottom: var(--s600);
+}
+.pad-800-v {
+  padding-top: var(--s600);
+  padding-bottom: var(--s600);
+}
+
+/* Horizontal margins */
+.gap-300-h {
+  margin-left: var(--s300);
+  margin-right: var(--s300);
+}
+.gap-base-h {
+  margin-left: var(--s400);
+  margin-right: var(--s400);
+}
+.gap-600-h {
+  margin-left: var(--s600);
+  margin-right: var(--s600);
+}
+.gap-800-h {
+  margin-left: var(--s600);
+  margin-right: var(--s600);
+}
+
+/* Vertical margins */
+.gap-300-v {
+  margin-top: var(--s300);
+  margin-bottom: var(--s300);
+}
+.gap-base-v {
+  margin-top: var(--s400);
+  margin-bottom: var(--s400);
+}
+.gap-600-v {
+  margin-top: var(--s600);
+  margin-bottom: var(--s600);
+}
+.gap-800-v {
+  margin-top: var(--s600);
+  margin-bottom: var(--s600);
+}
+
+/* Flow */
+
+/* 'owl selector' with a margin-top value to avoid 
+redundant margins in first or last element of a set. */
+.rows > * + * {
+  /* If no --flow-space is defined use 1em as value */
+  margin-top: var(--flow-space, 1.5em);
+}
+
+.flex {
+  display: flex;
+}
+
+.float-lft {
+  float: left;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.width-eight {
+  width: 80%;
+}
+
+.width-third {
+  width: 75%;
+}
+
+.width-half {
+  width: 50%;
+}
+
+.width-quarter {
+  width: 25%;
+}
+
+.width-fifth {
+  width: 20%;
+}
+
+/* Utilities */
+
+.inner-wrapper-loose {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60rem;
+}
+
+.inner-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 54rem;
+}
+
+.inner-wrapper-compact {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 32rem;
+}
+
+.pill {
+}
+
+.box {
+}
+
+.slab {
+}
+
+.primary {
+  background-color: rgb(var(--primary));
+  color: rgb(var(--light));
+}
+
+.secondary {
+  background-color: rgb(var(--secondary));
+  color: rgb(var(--light));
+}
+
+.tertiary {
+  background-color: rgb(var(--tertiary));
+  color: rgb(var(--light));
+}
+
+.shadow {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(var(--dark), 0.12);
+}
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Modules */
+.search-box {
+  border: 0px solid rgb(var(--grey));
+  border-radius: 4px;
+  overflow: hidden;
+}
+.search-box input,
+.search-box button {
+  border: 0;
+}
+
+/* TYPOGRAPHY */
+/*
 body {
   font-family: "Raleway", sans-serif;
   background-color: #f0f0f0;
@@ -39,8 +335,9 @@ img {
   width: 100%;
 }
 .container {
-  margin: 0 auto;
+  margin-block:  auto;
   max-width: 960px;
+  background-color: white;
 }
 
 .flex {
@@ -145,3 +442,4 @@ main {
 #customization-form {
   align-self: flex-start;
 }
+*/

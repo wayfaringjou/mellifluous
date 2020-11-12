@@ -414,7 +414,7 @@ function handleQueryResultClick() {
       $(e.currentTarget).before('<h3 class="warning">Delete one selection before adding another.</h3>');
     } else {
       $(e.currentTarget).removeClass('search-result-item');
-      $(e.currentTarget).addClass('selected-item');
+      $(e.currentTarget).addClass('selected-item width-fifth');
       $(e.currentTarget).off();
 
       renderSeedSelection($(e.currentTarget).parent());
