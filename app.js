@@ -266,27 +266,30 @@ function generateListArticle(storageObj, itemId) {
   let caption;
   if (itemObj.type === 'track') {
     img = itemObj.album.images.length
-      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." />`
-      : '<img src="images/noimage.png" alt="No image found" />';
+      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." class="width-full" />`
+      : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
     caption = itemObj.artists.map((e) => e.name).join(', ');
   } else {
     img = itemObj.images.length
-      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" />`
-      : '<img src="images/noimage.png" alt="No image found" />';
+      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" class="width-full"/>`
+      : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
     if (itemObj.genres.length) {
-      caption = itemObj.genres.join(', ');
+      //caption = itemObj.genres.join(', ');
+      caption = itemObj.genres.map((e) => `<span class="pill">${e}</span>`).join('');
     }
   }
 
   return `
   <li>
   <a href="#">
-    <article class="search-result-item flex box" data-id="${itemId}" data-type="${itemObj.type}">
-           ${img}
+    <article class="search-result-item cl-box" data-id="${itemId}" data-type="${itemObj.type}">
+        <div class="inner-box">    
+         ${img}
         <section class="caption">
            <h3>${itemObj.name}</h3>
            <h4>${caption || ''}</h4>
         </section>
+        </div>
     </article>
   </a>
   </li>`;

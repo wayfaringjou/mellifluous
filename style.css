@@ -183,6 +183,10 @@ fieldset {
   font-size: var(--s600);
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 /* Flow */
 
 /* 'owl selector' with a margin-top value to avoid 
@@ -195,6 +199,14 @@ redundant margins in first or last element of a set. */
 .flex {
   display: flex;
 }
+
+.collapse {
+  flex-flow: row wrap;
+}
+
+
+  flex: 0 0 25%;
+
 
 .float-lft {
   float: left;
@@ -245,9 +257,14 @@ redundant margins in first or last element of a set. */
 }
 
 .pill {
-}
-
-.box {
+  display: inline-block;
+  font-size: var(--s400);
+  line-height: 1em;
+  border-radius: 8px;
+  padding: 0.3rem 0.35rem;
+  margin: 0.3rem;
+  white-space: nowrap;
+  background-color: rgba(var(--tertiary), 0.325);
 }
 
 .slab {
@@ -316,6 +333,26 @@ redundant margins in first or last element of a set. */
   border: 0;
 }
 
+.cl-box {
+  overflow: hidden;
+  border-radius: 4px;
+  max-height: 12rem;
+  margin: var(--s400);
+
+}
+
+.cl-box .inner-box {
+  position: relative;
+}
+
+.cl-box .caption {
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height:100%;
+  background-color: rgba(var(--primary), 0.305);
+  color: rgb(var(--light));
+}
 
 /* TYPOGRAPHY */
 /*
