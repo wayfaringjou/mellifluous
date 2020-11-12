@@ -390,7 +390,7 @@ function handleKeywordSearchSubmit() {
   $('#keyword-search').on('submit', (e) => {
     e.preventDefault();
     const keywordQuery = $(e.currentTarget).find('#keyword-search-input').val();
-    const queryType = $(e.currentTarget).serializeArray()[1].value;
+    const queryType = $(e.currentTarget).serializeArray()[0].value;
 
     requestKeywordSearch(keywordQuery, [queryType])
       .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))

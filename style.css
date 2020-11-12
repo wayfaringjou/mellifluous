@@ -175,6 +175,14 @@ fieldset {
   margin-bottom: var(--s600);
 }
 
+.text-500 {
+  font-size: var(--s500);
+}
+
+.text-600 {
+  font-size: var(--s600);
+}
+
 /* Flow */
 
 /* 'owl selector' with a margin-top value to avoid 
@@ -260,10 +268,24 @@ redundant margins in first or last element of a set. */
   color: rgb(var(--light));
 }
 
+.primary-txt {
+  color: rgb(var(--primary));
+}
+
+.secondary-txt {
+  color: rgb(var(--secondary));
+}
+
+.tertiary-txt {
+  color: rgb(var(--tertiary));
+}
+
 .shadow {
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+  box-shadow: 0 2.8px 2.2px rgba(var(--dark), 0.034),
+    0 6.7px 5.3px rgba(var(--dark), 0.048),
+    0 12.5px 10px rgba(var(--dark), 0.06),
+    0 22.3px 17.9px rgba(var(--dark), 0.072),
+    0 41.8px 33.4px rgba(var(--dark), 0.086),
     0 100px 80px rgba(var(--dark), 0.12);
 }
 
@@ -293,6 +315,7 @@ redundant margins in first or last element of a set. */
 .search-box button {
   border: 0;
 }
+
 
 /* TYPOGRAPHY */
 /*
