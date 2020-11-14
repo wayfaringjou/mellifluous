@@ -39,65 +39,83 @@
       </section>
     </header>
     <main>
-      <article id="search-form" class="pad-base-h pad-base-v gap-base-v">
+      <article id="search-form" class="pad-base-h pad-base-v gap-600-top">
         <form id="keyword-search" class="inner-wrapper">
           <fieldset aria-labelledby="search-action-call">
             <h2 id="search-action-call">
               First, let's find something you like.
             </h2>
-            <section id="search-prompt" class="gap-base-v width-full">
-              <div>
-                <input
-                  type="radio"
-                  name="search-type"
-                  id="search-type-song"
-                  value="track"
-                  checked
-                  class=""
-                />
-                <label for="search-type-song" class="primary-txt text-500">Song</label>
-                <input
-                  type="radio"
-                  name="search-type"
-                  id="search-type-artist"
-                  value="artist"
-                  class=""
-                />
-                <label for="search-type-artist" class="primary-txt text-500">Artist</label>
+            <section
+              id="keyword-search-prompt"
+              class="gap-800-top width-full flex-container search-prompt"
+            >
+              <div class="flex-container-row radio-toggle">
+                <label for="search-type-song" class="radio">
+                  <span class="radio-input">
+                    <input
+                      type="radio"
+                      name="search-type"
+                      id="search-type-song"
+                      value="track"
+                      checked
+                      class=""
+                    />
+                    <span class="radio-control"></span>
+                  </span>
+                  <span class="primary-txt text-500 uppercase radio-label"
+                    >Song
+                  </span></label
+                >
+                <label for="search-type-artist" class="radio">
+                  <span class="radio-input">
+                    <input
+                      type="radio"
+                      name="search-type"
+                      id="search-type-artist"
+                      value="artist"
+                      class=""
+                    />
+                    <span class="radio-control"></span>
+                  </span>
+                  <span class="primary-txt text-500 uppercase radio-label"
+                    >Artist</span
+                  ></label
+                >
               </div>
               <label for="keyword-search-input" class="visually-hidden"
                 >Enter song or artist's name</label
               >
-              <div class="search-box shadow flex">
+              <div class="search-box shadow width-full">
                 <input
                   required
                   placeholder="Song or artist's name"
-                  type="text"
+                  type="search"
                   name="keyword-search-input"
                   id="keyword-search-input"
-                  class="width-third pad-base-h pad-base-v"
+                  class="width-full pad-300-left pad-base-v text-600"
                 />
-                <button
-                  type="submit"
-                  id="song-search-submit"
-                  class="width-quarter pad-base-v primary text-500 uppercase"
-                >
-                  Search
-                </button>
               </div>
+
+              <button
+                type="submit"
+                id="song-search-submit"
+                class="width-third flex-item-center gap-800-v pad-600-v pad-600-h primary text-600 uppercase pill shadow-primary"
+              >
+                Search
+              </button>
             </section>
           </fieldset>
         </form>
       </article>
       <section id="search-results" class="hidden inner-wrapper">
         <h2>Found:</h2>
-        <ul id="search-results-list" class=" collapse"></ul>
+        <ul id="search-results-list" class="flex-container-row rows pad-300-right"></ul>
       </section>
       <section id="seed-selection" class="hidden">
         <h2>Selected:</h2>
-        <ul id="seed-selection-list" class="flex"></ul>
+        <ul id="seed-selection-list" class="flex-container-row pad-300-right"></ul>
       </section>
-      <section id="recommendations" class="flex flex-column hidden">
+      <section id="recommendations" class="gap-800-top flex-container hidden">
         <section id="customization-form" class="width-full">
           <form id="customize-recommendations" class="box">
             <fieldset>
@@ -106,14 +124,18 @@
           </form>
         </section>
         <section id="recommendations-results" class="width-full gap-600-v">
-
           <h2>Recommendations:</h2>
 
-          <ul id="recommendations-results-list" class="rows"></ul>
+          <ul id="recommendations-results-list" class="gap-600-top rows"></ul>
         </section>
       </section>
     </main>
-    <footer></footer>
+    <footer class="flex-column">
+      <hr class="" />
+      <section id="copyright" class="flex-item-center">
+        <p>© 2020 Joel Del Cueto</p>
+      </section>
+    </footer>
     <!-- Load app script -->
     <script src="app.js"></script>
   </body>

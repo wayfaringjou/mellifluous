@@ -274,25 +274,25 @@ function generateListArticle(storageObj, itemId) {
     img = itemObj.images.length
       ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" "/>`
       : '<img src="images/noimage.png" alt="No image found" />';
-    if (itemObj.genres.length) {
-      // caption = itemObj.genres.join(', ');
-      caption = itemObj.genres.map((e) => `<span class="pill primary">${e}</span>`)
-        .splice(0, 3).join('');
-    }
+//    if (itemObj.genres.length) {
+//      // caption = itemObj.genres.join(', ');
+//      caption = itemObj.genres.map((e) => `<span class="pad-min pill primary text-300 capitalize">${e}</span>`)
+//        .splice(0, 2).join('');
+//    }
   }
 
   return `
-  <li class="search-list-element flex-wrap-fifth">
-    <article class="search-result-item image-box" data-id="${itemId}" data-type="${itemObj.type}">
+  <li class="search-list-element width-half pad-300-left">
+    <article class="search-result-item image-box shadow" data-id="${itemId}" data-type="${itemObj.type}">
         <section class="img-wrapper">    
          ${img}
-          <section class="overlay easing-gradient-tint"></section>
+          <div class="overlay easing-gradient-tint"></div>
         </section>
-        <section class="caption">
+        <section class="caption pad-min">
           <a href="#">
-           <h3>${itemObj.name}</h3>
+           <h3 class="light-txt tertiary-txt-shadow text-600">${itemObj.name}</h3>
           </a>
-           <h4>${caption || ''}</h4>
+           <h4 class="text-500 secondary-txt-shadow">${caption || ''}</h4>
         </section>
     </article>
   </li>`;
@@ -306,8 +306,8 @@ function generateResultsList(storageObj, generatorFunc) {
 
 function generateRange(attrObj, attrKey) {
   return `
-  <div class="flex flex-column flex-wrap-fifth">
-  <label for="${attrKey}">${attrKey}</label>
+  <div class="flex-container width-half pad-min">
+  <label for="${attrKey}" class="capitalize">${attrKey}</label>
   <input
     type="range"
     name="${attrKey}"
@@ -325,13 +325,18 @@ function generateAttributeRanges(attrObj) {
   const attrKeysArray = Object.keys(attrObj);
   const attrRanges = attrKeysArray.map((attrKey) => generateRange(targetAttributes, attrKey));
 
-  attrRanges.unshift('<div class="flex collapse">');
+  attrRanges.unshift('<div class="flex-container-row">');
+  attrRanges.unshift('<div class="flex-container">');
   attrRanges.push('</div>');
 
   attrRanges.push(`
-  <button type="submit" id="customize-recommendations-submit">
+  <button 
+    type="submit" 
+    id="customize-recommendations-submit"
+    class="width-third flex-item-center gap-800-v pad-600-v pad-600-h primary text-600 uppercase pill shadow-primary">
   Customize
-  </button>`);
+  </button>
+  </div>`);
 
   return attrRanges.join('');
 }
@@ -343,27 +348,41 @@ function generateRecommendationArticle(storageObj, itemId) {
     : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
 
   return `
-
   <li>
-  <article class="flex slab">
-  <section class="album-img img-wrapper width-fifth gap-300-h">
-  ${img}
-  </section>
-  <section class="slab-content width-eight">
-  <h3>
-  <a 
-    href="${itemObj.external_urls.spotify}"
-    target="_blank" 
-    class="song-result" 
-    data-song-id="${itemObj.id}">
-  ${itemObj.name}</a></h3>
-
-  <h4 class="pill secondary">Artist(s)</h4>
-  <p>${itemObj.artists.map((e) => e.name).join(', ')}<p>
-  <h4 class="pill secondary">Album</h4>
-  <p>${itemObj.album.name}<p>
-  </section>
-  </article>
+   <article id="recommendation-item" class="flex-container-row card reccomendation-card">
+     <section id="recommendation-album-img" class="width-forty pad-300-h card-img">
+      <div class="image-box">
+        <div class="img-wrapper">
+          ${img}
+          <div class="overlay"></div>
+        </div>
+      </div>
+     </section>
+     <section id="recommendation-content" class="rows card-content width-sixty">
+      <section id="recommendation-content-heading" class="">
+       <h3 class="text-500">
+       <a 
+       href="${itemObj.external_urls.spotify}"
+       target="_blank" 
+       class="song-result" 
+       data-song-id="${itemObj.id}">
+          ${itemObj.name}
+       </a>
+       </h3>
+      </section>
+      <section id="recommendation-content-subheading" class="flex-container-row">
+        <div class="rows flex-item-wrapper width-half">
+          <h4 class="pad-min pill secondary text-300">Artist(s)</h4>
+          <p>${itemObj.artists.map((e) => e.name).join(', ')}<p>
+        </div>
+        <div class="rows flex-item-wrapper width-half">
+          <h4 class="pad-min pill secondary text-300">Album</h4>
+          <p>${itemObj.album.name}<p>
+        </div>
+      </section>
+      <section id="recommendation-content-description" class="">
+     </section>
+   </article>
   </li>`;
 }
 
