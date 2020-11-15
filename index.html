@@ -107,25 +107,33 @@
           </fieldset>
         </form>
       </article>
-      <section id="search-results" class="hidden inner-wrapper">
-        <h2>Found:</h2>
-        <ul id="search-results-list" class="flex-container-row rows pad-300-right gap-600-v"></ul>
+      <section id="search-results" class="hidden inner-wrapper pad-min">
+        <h2 class="primary-decoration pad-min-left">Select from results:</h2>
+        <ul
+          id="search-results-list"
+          class="flex-container-row rows pad-300-right gap-600-v"
+        ></ul>
       </section>
-      <section id="seed-selection" class="hidden rows inner-wrapper">
-        <h2>Your selection:</h2>
-        <p>You can select up to five items to find tracks.</p>
-        <ul id="seed-selection-list" class="flex-container-row pad-300-right"></ul>
+      <section id="seed-selection" class="hidden rows inner-wrapper pad-min">
+        <h2 class="primary-decoration pad-min-left">Your selection:</h2>
+        <p class="gap-300-left">
+          You can select up to five items to find tracks.
+        </p>
+        <ul
+          id="seed-selection-list"
+          class="flex-container-row pad-300-right pad-300-v radius rows"
+        ></ul>
       </section>
-      <section id="recommendations" class="gap-800-top flex-container hidden">
-        <section id="customization-form" class="width-full">
+      <section id="recommendations" class="gap-600-top flex-container hidden">
+        <aside id="customization-form" class="width-full">
           <form id="customize-recommendations" class="box">
             <fieldset>
-              <legend><h3>Customize your recommendations</h3></legend>
+              <legend><h3 class="primary-decoration pad-min-left gap-base-v">Customize your recommendations</h3></legend>
             </fieldset>
           </form>
-        </section>
+        </aside>
         <section id="recommendations-results" class="width-full gap-600-v">
-          <h2>Recommendations:</h2>
+          <h2 class="primary-decoration pad-min-left">Recommendations:</h2>
 
           <ul id="recommendations-results-list" class="gap-600-top rows"></ul>
         </section>
@@ -135,7 +143,16 @@
       <hr class="" />
       <section id="copyright" class="flex-item-center">
         <p>© 2020 Joel Del Cueto</p>
-        <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        <div>
+          Icons made by
+          <a href="https://www.flaticon.com/authors/freepik" title="Freepik"
+            >Freepik</a
+          >
+          from
+          <a href="https://www.flaticon.com/" title="Flaticon"
+            >www.flaticon.com</a
+          >
+        </div>
       </section>
     </footer>
     <!-- Load app script -->

@@ -448,9 +448,17 @@ redundant margins in first or last element of a set. */
   color: rgb(var(--light));
 }
 
+.primary-decoration {
+  border-left: 3px dotted rgb(var(--primary));
+}
+
 .secondary {
   background-color: rgb(var(--secondary));
   color: rgb(var(--dark));
+}
+
+.secondary-faded {
+  background-color: rgba(var(--secondary), 0.25);
 }
 
 .tertiary {
@@ -659,7 +667,8 @@ redundant margins in first or last element of a set. */
 
 /* Exceptions */
 
-#search-results-list li:nth-child(2) {
+#search-results-list li:nth-child(2),
+#seed-selection-list li:nth-child(2) {
   margin-top: 0;
 }
 
