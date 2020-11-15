@@ -291,11 +291,10 @@ function generateListArticle(storageObj, itemId) {
           ${img}
           <div class="overlay easing-gradient-tint"></div>
         </section>
-        <section class="caption pad-min">
-          <a href="#">
-           <h3 class="light-txt tertiary-txt-shadow text-600">${itemObj.name}</h3>
-          </a>
-           <h4 class="text-500 secondary-txt-shadow">${caption || ''}</h4>
+        <section class="caption pad-min rows">
+        
+           <h3 class="light-txt dark-txt-shadow text-700">${itemObj.name}</h3>
+           <h4 class="light-txt text-500 dark-txt-shadow">${caption || ''}</h4>
         </section>
     </article>
   </li>`;
@@ -309,8 +308,9 @@ function generateResultsList(storageObj, generatorFunc) {
 
 function generateRange(attrObj, attrKey) {
   return `
-  <div class="flex-container width-half pad-min">
-  <label for="${attrKey}" class="capitalize">${attrKey}</label>
+  <div class="flex-container-row width-half pad-min attribute-range">
+  <label for="${attrKey}" class="attribute-label">${attrKey}</label>
+  <img src="./images/icons/attributes/${attrKey}-min.svg" class="attribute-icon" />
   <input
     type="range"
     name="${attrKey}"
@@ -319,8 +319,9 @@ function generateRange(attrObj, attrKey) {
     max="${attrObj[attrKey].max}"
     value="${attrObj[attrKey].value}"
     step="${attrObj[attrKey].step}"
-    class="width-eight"
+    class=""
   />
+  <img src="./images/icons/attributes/${attrKey}-max.svg" class="attribute-icon"/>
   </div>`;
 }
 

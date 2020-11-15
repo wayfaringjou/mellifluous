@@ -41,6 +41,33 @@
   --s400: 1rem;
   --s300: 0.8rem;
   --smin: 0.262rem;
+
+  /* Gradient */
+
+  --gradient: linear-gradient(
+    to top,
+    hsl(170.77, 76.47%, 60%) 0%,
+    hsl(174.05, 63.43%, 59.7%) 0.9%,
+    hsl(179.12, 50.87%, 58.97%) 3.4%,
+    hsl(186.48, 45.9%, 59.91%) 7.3%,
+    hsl(195.83, 42.2%, 60.96%) 12.5%,
+    hsl(207.54, 38.67%, 61.85%) 18.8%,
+    hsl(222.04, 35.35%, 62.61%) 26%,
+    hsl(239.81, 32.26%, 63.26%) 33.9%,
+    hsl(255.72, 36.11%, 60.03%) 42.2%,
+    hsl(266.3, 39.58%, 56.77%) 51%,
+    hsl(273.61, 42.7%, 53.54%) 59.9%,
+    hsl(278.78, 45.52%, 50.35%) 68.7%,
+    hsl(282.44, 53.63%, 47.26%) 77.3%,
+    hsl(284.98, 63.04%, 44.38%) 85.5%,
+    hsl(286.58, 71.85%, 42.02%) 93.2%,
+    hsl(287.17, 76.08%, 40.98%) 100%
+  );
+  --gradient--linear: linear-gradient(
+    to top,
+    hsla(171, 76%, 60%, 1),
+    hsla(287, 76%, 41%, 1)
+  );
 }
 
 /* Global */
@@ -269,7 +296,7 @@ input[type="image"] {
 redundant margins in first or last element of a set. */
 .rows > * + * {
   /* If no --flow-space is defined use 1em as value */
-  margin-top: var(--flow-space, 1.5em);
+  margin-top: var(--flow-space, 1.25em);
 }
 
 .flex-container {
@@ -451,13 +478,16 @@ redundant margins in first or last element of a set. */
   text-shadow: 1px 1px rgb(var(--tertiary-dark));
 }
 
+.dark-txt-shadow {
+  text-shadow: 1px 1px rgb(var(--dark));
+}
+
 .light-txt {
   color: rgb(var(--light));
 }
 
 .shadow {
-  box-shadow:
-    0 2.8px 2.2px rgba(var(--dark), 0.034),
+  box-shadow: 0 2.8px 2.2px rgba(var(--dark), 0.034),
     0 6.7px 5.3px rgba(var(--dark), 0.048),
     0 12.5px 10px rgba(var(--dark), 0.06),
     0 22.3px 17.9px rgba(var(--dark), 0.072),
@@ -466,8 +496,7 @@ redundant margins in first or last element of a set. */
 }
 
 .shadow-tertiary {
-  box-shadow:
-    0 2.8px 2.2px rgba(var(--tertiary-dark), 0.034),
+  box-shadow: 0 2.8px 2.2px rgba(var(--tertiary-dark), 0.034),
     0 6.7px 5.3px rgba(var(--tertiary-dark), 0.048),
     0 12.5px 10px rgba(var(--tertiary-dark), 0.06),
     0 22.3px 17.9px rgba(var(--tertiary-dark), 0.072),
@@ -476,26 +505,27 @@ redundant margins in first or last element of a set. */
 }
 
 .easing-gradient-tint {
-  background-image:
-    linear-gradient(
-      307deg,
-      hsl(163.74, 51.2%, 59.02%) 0%,
-      hsl(164, 50.37%, 58.85%) 8.4%,
-      hsl(164.78, 48.07%, 58.38%) 15.8%,
-      hsl(166.14, 44.55%, 57.62%) 22.3%,
-      hsl(168.25, 40.09%, 56.61%) 28.1%,
-      hsl(171.42, 34.95%, 55.36%) 33.5%,
-      hsl(176.2, 29.37%, 53.9%) 38.5%,
-      hsl(183.5, 25.39%, 52.93%) 43.4%,
-      hsl(192.89, 23.76%, 52.82%) 48.4%,
-      hsl(204.31, 22.15%, 52.69%) 53.6%,
-      hsl(217.8, 20.63%, 52.56%) 59.2%,
-      hsl(233.08, 19.26%, 52.44%) 65.4%,
-      hsl(248.01, 20.32%, 51%) 72.4%,
-      hsl(257.4, 23.65%, 48.89%) 80.4%,
-      hsl(262.51, 26.8%, 47.41%) 89.5%,
-      hsl(264.18, 28.03%, 46.86%) 100%
-    );
+  /*
+  background-image: linear-gradient(
+    307deg,
+    hsl(163.74, 51.2%, 59.02%) 0%,
+    hsl(164, 50.37%, 58.85%) 8.4%,
+    hsl(164.78, 48.07%, 58.38%) 15.8%,
+    hsl(166.14, 44.55%, 57.62%) 22.3%,
+    hsl(168.25, 40.09%, 56.61%) 28.1%,
+    hsl(171.42, 34.95%, 55.36%) 33.5%,
+    hsl(176.2, 29.37%, 53.9%) 38.5%,
+    hsl(183.5, 25.39%, 52.93%) 43.4%,
+    hsl(192.89, 23.76%, 52.82%) 48.4%,
+    hsl(204.31, 22.15%, 52.69%) 53.6%,
+    hsl(217.8, 20.63%, 52.56%) 59.2%,
+    hsl(233.08, 19.26%, 52.44%) 65.4%,
+    hsl(248.01, 20.32%, 51%) 72.4%,
+    hsl(257.4, 23.65%, 48.89%) 80.4%,
+    hsl(262.51, 26.8%, 47.41%) 89.5%,
+    hsl(264.18, 28.03%, 46.86%) 100%
+  ); */
+  background-image: var(--gradient);
   opacity: 0.8;
 }
 
@@ -563,18 +593,62 @@ redundant margins in first or last element of a set. */
 .image-box {
   /* overflow: hidden; */
   position: relative;
- /* border-radius: var(--s300); */
+  /* border-radius: var(--s300); */
 }
 
 .image-box .caption {
   top: 0;
   position: absolute;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  --flow-space: 0.15em;
+}
+.image-box .caption h3 {
+  font-size: 6.15vw;
 }
 
-.search-list-element .image-box ~ .img-wrapper input[type=image]:focus {
-  outline-offset: 100px;
-  /*outline-style: none;*/
+.image-box .caption h4 {
+  font-weight: 100;
+  text-transform: uppercase;
+  font-size: 4.8vw;
+}
+
+.image-box hr {
+  border: solid 1px rgb(var(--light));
+  width: 80%;
+}
+
+.image-box input[type="image"]:focus,
+.image-box:hover {
+  outline-style: none;
+  transform: scale(1.05);
+}
+
+.image-box input[type="image"]:focus + .overlay {
   box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(var(--dark));
+  transform: scale(1.05);
+  background-image: var(--gradient--linear);
+}
+
+.image-box:hover .overlay {
+  background-image: var(--gradient--linear);
+}
+
+.attribute-range .attribute-icon {
+  width: 14%;
+  margin: 0 var(--smin);
+}
+
+.attribute-range .attribute-label {
+  text-transform: capitalize;
+  width: 100%;
+  font-weight: 100;
+  text-align: center;
+}
+
+.attribute-range input[type="range"] {
+  width: 60%;
 }
 
 .card-content {
@@ -591,16 +665,16 @@ redundant margins in first or last element of a set. */
 
 /* Ranges */
 
-input[type=range] {
-  width: 100%;
+input[type="range"] {
+  /*width: 100%;*/
   margin: 5px 0;
   background-color: transparent;
   -webkit-appearance: none;
 }
-input[type=range]:focus {
+input[type="range"]:focus {
   outline: none;
 }
-input[type=range]::-webkit-slider-runnable-track {
+input[type="range"]::-webkit-slider-runnable-track {
   background: #9319b6;
   border: 0;
   border-radius: 25px;
@@ -608,7 +682,7 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 4px;
   cursor: pointer;
 }
-input[type=range]::-webkit-slider-thumb {
+input[type="range"]::-webkit-slider-thumb {
   margin-top: -5px;
   width: 14px;
   height: 14px;
@@ -618,10 +692,10 @@ input[type=range]::-webkit-slider-thumb {
   cursor: pointer;
   -webkit-appearance: none;
 }
-input[type=range]:focus::-webkit-slider-runnable-track {
+input[type="range"]:focus::-webkit-slider-runnable-track {
   background: #f1d5f9;
 }
-input[type=range]::-moz-range-track {
+input[type="range"]::-moz-range-track {
   background: #9319b6;
   border: 0;
   border-radius: 25px;
@@ -629,7 +703,7 @@ input[type=range]::-moz-range-track {
   height: 4px;
   cursor: pointer;
 }
-input[type=range]::-moz-range-thumb {
+input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
   background: #9319b6;
@@ -637,7 +711,7 @@ input[type=range]::-moz-range-thumb {
   border-radius: 50px;
   cursor: pointer;
 }
-input[type=range]::-ms-track {
+input[type="range"]::-ms-track {
   background: transparent;
   border-color: transparent;
   border-width: 5px 0;
@@ -646,17 +720,17 @@ input[type=range]::-ms-track {
   height: 4px;
   cursor: pointer;
 }
-input[type=range]::-ms-fill-lower {
+input[type="range"]::-ms-fill-lower {
   background: #000000;
   border: 0;
   border-radius: 50px;
 }
-input[type=range]::-ms-fill-upper {
+input[type="range"]::-ms-fill-upper {
   background: #9319b6;
   border: 0;
   border-radius: 50px;
 }
-input[type=range]::-ms-thumb {
+input[type="range"]::-ms-thumb {
   width: 14px;
   height: 14px;
   background: #9319b6;
@@ -666,17 +740,17 @@ input[type=range]::-ms-thumb {
   margin-top: 0px;
   /*Needed to keep the Edge thumb centred*/
 }
-input[type=range]:focus::-ms-fill-lower {
+input[type="range"]:focus::-ms-fill-lower {
   background: #9319b6;
 }
-input[type=range]:focus::-ms-fill-upper {
+input[type="range"]:focus::-ms-fill-upper {
   background: #f1d5f9;
 }
 /*TODO: Use one of the selectors from https://stackoverflow.com/a/20541859/7077589 and figure out
 how to remove the virtical space around the range input in IE*/
-@supports (-ms-ime-align:auto) {
+@supports (-ms-ime-align: auto) {
   /* Pre-Chromium Edge only styles, selector taken from hhttps://stackoverflow.com/a/32202953/7077589 */
-  input[type=range] {
+  input[type="range"] {
     margin: 0;
     /*Edge starts the margin from the thumb, not the track as other browsers do*/
   }
