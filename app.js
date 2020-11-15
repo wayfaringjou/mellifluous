@@ -267,13 +267,13 @@ function generateListArticle(storageObj, itemId) {
   let caption;
   if (itemObj.type === 'track') {
     img = itemObj.album.images.length
-      ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover."  />`
-      : '<img src="images/noimage.png" alt="No image found" />';
+      ? `<input type="image" src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover."  class="radius shadow"/>`
+      : '<input type="image" src="images/noimage.png" alt="No image found" class="radius shadow" />';
     caption = itemObj.artists.map((e) => e.name).join(', ');
   } else {
     img = itemObj.images.length
-      ? `<img src="${itemObj.images[0].url}" alt="${itemObj.name}" "/>`
-      : '<img src="images/noimage.png" alt="No image found" />';
+      ? `<input type="image" src="${itemObj.images[0].url}" alt="${itemObj.name}" class="radius shadow" />`
+      : '<input type="image" src="images/noimage.png" alt="No image found" class="radius shadow" />';
 //    if (itemObj.genres.length) {
 //      // caption = itemObj.genres.join(', ');
 //      caption = itemObj.genres.map((e) => `<span class="pad-min pill primary text-300 capitalize">${e}</span>`)
@@ -283,9 +283,12 @@ function generateListArticle(storageObj, itemId) {
 
   return `
   <li class="search-list-element width-half pad-300-left">
-    <article class="search-result-item image-box shadow" data-id="${itemId}" data-type="${itemObj.type}">
+    <article 
+    class="search-result-item image-box" 
+    data-id="${itemId}" 
+    data-type="${itemObj.type}">
         <section class="img-wrapper">    
-         ${img}
+          ${img}
           <div class="overlay easing-gradient-tint"></div>
         </section>
         <section class="caption pad-min">
@@ -333,7 +336,7 @@ function generateAttributeRanges(attrObj) {
   <button 
     type="submit" 
     id="customize-recommendations-submit"
-    class="width-third flex-item-center gap-800-v pad-600-v pad-600-h primary text-600 uppercase pill shadow-primary">
+    class="width-third flex-item-center gap-800-v pad-600-v pad-600-h text-600 button shadow-tertiary">
   Customize
   </button>
   </div>`);
@@ -351,7 +354,7 @@ function generateRecommendationArticle(storageObj, itemId) {
   <li>
    <article id="recommendation-item" class="flex-container-row card reccomendation-card">
      <section id="recommendation-album-img" class="width-forty pad-300-h card-img">
-      <div class="image-box">
+      <div class="image-box shadow">
         <div class="img-wrapper">
           ${img}
           <div class="overlay"></div>

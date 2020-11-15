@@ -120,15 +120,15 @@
        inkscape:collect="always"
        id="linearGradient1320">
       <stop
-         style="stop-color:#00aed8;stop-opacity:1"
+         style="stop-color:#4be6cf;stop-opacity:1"
          offset="0"
          id="stop1316" />
       <stop
-         style="stop-color:#4be6cf;stop-opacity:1"
-         offset="0.49966037"
+         style="stop-color:#9319b6;stop-opacity:1"
+         offset="0.44336167"
          id="stop852" />
       <stop
-         style="stop-color:#9319b6;stop-opacity:1"
+         style="stop-color:#00aed8;stop-opacity:1"
          offset="1"
          id="stop1318" />
     </linearGradient>
@@ -147,10 +147,10 @@
        inkscape:collect="always"
        xlink:href="#linearGradient1320"
        id="linearGradient1326"
-       x1="36.898712"
-       y1="47.479382"
-       x2="146.71786"
-       y2="47.479382"
+       x1="90.369324"
+       y1="32.084412"
+       x2="90.550323"
+       y2="65.219078"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.1730291,0,0,1.0099989,-19.96203,-32.150423)" />
   </defs>
@@ -161,9 +161,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.54098294"
-     inkscape:cx="134.99035"
-     inkscape:cy="252.22683"
+     inkscape:zoom="1.8956518"
+     inkscape:cx="369.77979"
+     inkscape:cy="109.35349"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -186,7 +186,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
