@@ -274,15 +274,15 @@ function generateListArticle(storageObj, itemId) {
     img = itemObj.images.length
       ? `<input type="image" src="${itemObj.images[0].url}" alt="${itemObj.name}" class="radius shadow" />`
       : '<input type="image" src="images/noimage.png" alt="No image found" class="radius shadow" />';
-//    if (itemObj.genres.length) {
-//      // caption = itemObj.genres.join(', ');
-//      caption = itemObj.genres.map((e) => `<span class="pad-min pill primary text-300 capitalize">${e}</span>`)
-//        .splice(0, 2).join('');
-//    }
+    //    if (itemObj.genres.length) {
+    //      // caption = itemObj.genres.join(', ');
+    //      caption = itemObj.genres.map((e) => `<span class="pad-min pill primary text-300 capitalize">${e}</span>`)
+    //        .splice(0, 2).join('');
+    //    }
   }
 
   return `
-  <li class="search-list-element width-half pad-300-left">
+  <li class="search-list-element width-half mq-m-width-fifth pad-300-left">
     <article 
     class="search-result-item image-box" 
     data-id="${itemId}" 
@@ -308,7 +308,7 @@ function generateResultsList(storageObj, generatorFunc) {
 
 function generateRange(attrObj, attrKey) {
   return `
-  <div class="flex-container-row width-half pad-min attribute-range">
+  <div class="flex-container-row width-half mq-m-width-fifth pad-min attribute-range">
   <label for="${attrKey}" class="attribute-label">${attrKey}</label>
   <img src="./images/icons/attributes/${attrKey}-min.svg" class="attribute-icon" />
   <input
@@ -372,7 +372,7 @@ function generateRecommendationArticle(storageObj, itemId) {
      </section>
      <section id="recommendation-content" class="rows card-content width-sixty pad-300-left">
       <section id="recommendation-content-heading" class="">
-       <h3 class="text-500">
+       <h3 class="text-500 mq-m-text-800">
        <a 
        href="${itemObj.external_urls.spotify}"
        target="_blank" 
@@ -382,14 +382,14 @@ function generateRecommendationArticle(storageObj, itemId) {
        </a>
        </h3>
       </section>
-      <section id="recommendation-content-subheading" class="flex-container-row">
+      <section id="recommendation-content-subheading" class="flex-container-row mq-m-flex-container-column">
         <div class="rows flex-item-wrapper width-half pad-300-h">
-          <h4 class="text-300 primary-decoration-b">Artist(s)</h4>
-          <p>${itemObj.artists.map((e) => e.name).join(', ')}<p>
+          <h4 class="text-300 mq-m-text-600 primary-decoration-b">Artist(s)</h4>
+          <p class="mq-m-text-500">${itemObj.artists.map((e) => e.name).join(', ')}<p>
         </div>
         <div class="rows flex-item-wrapper width-half pad-300-h">
-          <h4 class="text-300 primary-decoration-b">Album</h4>
-          <p>${itemObj.album.name}<p>
+          <h4 class="text-300 mq-m-text-600 primary-decoration-b">Album</h4>
+          <p class="mq-m-text-500">${itemObj.album.name}<p>
         </div>
       </section>
       <section id="recommendation-content-description" class="">

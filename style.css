@@ -110,16 +110,6 @@ h4 {
   letter-spacing: 0.015625em;
 }
 
-h5 {
-  font-size: var(--s500);
-  letter-spacing: 0;
-}
-
-small {
-  font-size: var(--s300);
-  letter-spacing: 0.025rem;
-}
-
 a {
   color: var(--secondary);
   text-decoration: none;
@@ -180,20 +170,11 @@ p {
   padding-right: var(--s400);
 }
 
-.pad-base-left {
-  padding-left: var(--s400);
-}
-
 .pad-300-right {
   padding-right: var(--s300);
 }
 
 .pad-600-h {
-  padding-left: var(--s600);
-  padding-right: var(--s600);
-}
-
-.pad-800-h {
   padding-left: var(--s600);
   padding-right: var(--s600);
 }
@@ -219,32 +200,7 @@ p {
   padding-bottom: var(--s600);
 }
 
-/* Horizontal margins */
-.gap-300-h {
-  margin-left: var(--s300);
-  margin-right: var(--s300);
-}
-
-.gap-base-h {
-  margin-left: var(--s400);
-  margin-right: var(--s400);
-}
-
-.gap-600-h {
-  margin-left: var(--s600);
-  margin-right: var(--s600);
-}
-
-.gap-800-h {
-  margin-left: var(--s600);
-  margin-right: var(--s600);
-}
-
 /* Vertical margins */
-.gap-300-v {
-  margin-top: var(--s300);
-  margin-bottom: var(--s300);
-}
 
 .gap-base-v {
   margin-top: var(--s400);
@@ -277,10 +233,6 @@ p {
   font-size: var(--s300);
 }
 
-.text-base {
-  font-size: var(--s400);
-}
-
 .text-500 {
   font-size: var(--s500);
 }
@@ -291,10 +243,6 @@ p {
 
 .uppercase {
   text-transform: uppercase;
-}
-
-.capitalize {
-  text-transform: capitalize;
 }
 
 /* Flow */
@@ -321,17 +269,8 @@ redundant margins in first or last element of a set. */
   align-self: center;
 }
 
-.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .width-full {
   width: 100%;
-}
-
-.width-eight {
-  width: 80%;
 }
 
 .width-forty {
@@ -350,14 +289,6 @@ redundant margins in first or last element of a set. */
   width: 50%;
 }
 
-.width-quarter {
-  width: 25%;
-}
-
-.width-fifth {
-  width: 20%;
-}
-
 /* Utilities */
 
 .inner-wrapper-loose {
@@ -370,12 +301,6 @@ redundant margins in first or last element of a set. */
   margin-left: auto;
   margin-right: auto;
   max-width: 54rem;
-}
-
-.inner-wrapper-compact {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 32rem;
 }
 
 .img-wrapper {
@@ -428,7 +353,7 @@ redundant margins in first or last element of a set. */
 
 .recommendation-card:focus .overlay .play,
 .recommendation-card:hover .overlay .play {
-  opacity: 50%
+  opacity: 50%;
 }
 
 .radio {
@@ -466,11 +391,6 @@ redundant margins in first or last element of a set. */
 
 /* Color */
 
-.primary {
-  background-color: rgb(var(--primary));
-  color: rgb(var(--light));
-}
-
 .primary-decoration {
   border-left: 3px dotted rgb(var(--primary));
 }
@@ -479,38 +399,8 @@ redundant margins in first or last element of a set. */
   border-bottom: 3px dotted rgb(var(--primary));
 }
 
-.secondary {
-  background-color: rgb(var(--secondary));
-  color: rgb(var(--dark));
-}
-
-.secondary-faded {
-  background-color: rgba(var(--secondary), 0.25);
-}
-
-.tertiary {
-  background-color: rgb(var(--tertiary));
-  color: rgb(var(--light));
-}
-
-.primary-txt {
-  color: rgb(var(--primary));
-}
-
-.secondary-txt {
-  color: rgb(var(--secondary));
-}
-
 .tertiary-txt {
   color: rgb(var(--tertiary));
-}
-
-.secondary-txt-shadow {
-  text-shadow: 1px 1px rgb(var(--secondary-dark));
-}
-
-.tertiary-txt-shadow {
-  text-shadow: 1px 1px rgb(var(--tertiary-dark));
 }
 
 .dark-txt-shadow {
@@ -519,6 +409,10 @@ redundant margins in first or last element of a set. */
 
 .light-txt {
   color: rgb(var(--light));
+}
+
+.dark-grey-txt {
+  color: rgb(var(--dark-grey));
 }
 
 .shadow {
@@ -540,26 +434,6 @@ redundant margins in first or last element of a set. */
 }
 
 .easing-gradient-tint {
-  /*
-  background-image: linear-gradient(
-    307deg,
-    hsl(163.74, 51.2%, 59.02%) 0%,
-    hsl(164, 50.37%, 58.85%) 8.4%,
-    hsl(164.78, 48.07%, 58.38%) 15.8%,
-    hsl(166.14, 44.55%, 57.62%) 22.3%,
-    hsl(168.25, 40.09%, 56.61%) 28.1%,
-    hsl(171.42, 34.95%, 55.36%) 33.5%,
-    hsl(176.2, 29.37%, 53.9%) 38.5%,
-    hsl(183.5, 25.39%, 52.93%) 43.4%,
-    hsl(192.89, 23.76%, 52.82%) 48.4%,
-    hsl(204.31, 22.15%, 52.69%) 53.6%,
-    hsl(217.8, 20.63%, 52.56%) 59.2%,
-    hsl(233.08, 19.26%, 52.44%) 65.4%,
-    hsl(248.01, 20.32%, 51%) 72.4%,
-    hsl(257.4, 23.65%, 48.89%) 80.4%,
-    hsl(262.51, 26.8%, 47.41%) 89.5%,
-    hsl(264.18, 28.03%, 46.86%) 100%
-  ); */
   background-image: var(--gradient);
   opacity: 0.8;
 }
@@ -590,14 +464,6 @@ redundant margins in first or last element of a set. */
 .search-box input,
 .search-box button {
   border: 0;
-}
-
-.pill {
-  display: inline-block;
-  line-height: 1em;
-  font-weight: 100;
-  border-radius: 8px;
-  white-space: nowrap;
 }
 
 .button {
@@ -649,11 +515,6 @@ redundant margins in first or last element of a set. */
   font-size: 4.8vw;
 }
 
-.image-box hr {
-  border: solid 1px rgb(var(--light));
-  width: 80%;
-}
-
 .image-box input[type="image"]:focus,
 .image-box:hover {
   outline-style: none;
@@ -696,7 +557,6 @@ redundant margins in first or last element of a set. */
 .card-content p {
   max-width: 100%;
 }
-
 
 /* Exceptions */
 
@@ -798,12 +658,55 @@ input[type="range"]:focus::-ms-fill-lower {
 input[type="range"]:focus::-ms-fill-upper {
   background: #f1d5f9;
 }
-/*TODO: Use one of the selectors from https://stackoverflow.com/a/20541859/7077589 and figure out
-how to remove the virtical space around the range input in IE*/
+
 @supports (-ms-ime-align: auto) {
   /* Pre-Chromium Edge only styles, selector taken from hhttps://stackoverflow.com/a/32202953/7077589 */
   input[type="range"] {
     margin: 0;
     /*Edge starts the margin from the thumb, not the track as other browsers do*/
+  }
+}
+
+@media all and (min-width: 768px) {
+  .mq-m-width-fifth {
+    width: 20%;
+  }
+  .mq-m-no-rows > * + * {
+    margin-top: 0;
+  }
+  .mq-m-pad-300 {
+    padding: var(--s300);
+  }
+
+  .mq-m-text-800 {
+    font-size: var(--s800);
+  }
+
+  .mq-m-text-600 {
+    font-size: var(--s600);
+  }
+
+  .mq-m-text-500 {
+    font-size: var(--s500);
+  }
+
+  .mq-m-flex-container-column {
+    flex-flow: column nowrap;
+  }
+
+  .button {
+    width: 45%;
+  }
+
+  .image-box .caption h3 {
+    font-size: var(--s700);
+  }
+
+  .image-box .caption h4 {
+    font-size: var(--s600);
+  }
+
+  .card-content {
+    --flow-space: 1.25rem;
   }
 }
