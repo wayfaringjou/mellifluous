@@ -147,6 +147,13 @@ input[type="image"] {
   border: 0;
 }
 
+p {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+}
+
 /* Composition */
 
 /* Spacing */
@@ -408,6 +415,22 @@ redundant margins in first or last element of a set. */
   */
 }
 
+.overlay .cancel-icon {
+  position: absolute;
+  left: 65%;
+  top: 65%;
+}
+
+.overlay .play {
+  width: 75%;
+  opacity: 0%;
+}
+
+.recommendation-card:focus .overlay .play,
+.recommendation-card:hover .overlay .play {
+  opacity: 50%
+}
+
 .radio {
   display: grid;
   grid-template-columns: min-content min-content;
@@ -450,6 +473,10 @@ redundant margins in first or last element of a set. */
 
 .primary-decoration {
   border-left: 3px dotted rgb(var(--primary));
+}
+
+.primary-decoration-b {
+  border-bottom: 3px dotted rgb(var(--primary));
 }
 
 .secondary {
@@ -663,13 +690,29 @@ redundant margins in first or last element of a set. */
   --flow-space: 0.15em;
 
   line-height: 1.25em;
+  overflow: hidden;
 }
+
+.card-content p {
+  max-width: 100%;
+}
+
 
 /* Exceptions */
 
 #search-results-list li:nth-child(2),
 #seed-selection-list li:nth-child(2) {
   margin-top: 0;
+}
+
+#recommendation-item .image-box input[type="image"]:focus + .overlay {
+  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(var(--dark));
+  transform: scale(1.05);
+  background-image: none;
+}
+
+#recommendation-item .image-box:hover .overlay {
+  background-image: none;
 }
 
 /* Ranges */

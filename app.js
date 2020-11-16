@@ -348,39 +348,47 @@ function generateAttributeRanges(attrObj) {
 function generateRecommendationArticle(storageObj, itemId) {
   const itemObj = storageObj[itemId];
   const img = itemObj.album.images.length
-    ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." class="width-full"/>`
-    : '<img src="images/noimage.png" alt="No image found" class="width-full"/>';
+    ? `<img src="${itemObj.album.images[0].url}" alt="'${itemObj.album.name}' album cover." class="width-full radius shadow"/>`
+    : '<img src="images/noimage.png" alt="No image found" class="width-full radius shadow"/>';
 
   return `
   <li>
    <article id="recommendation-item" class="flex-container-row card reccomendation-card">
-     <section id="recommendation-album-img" class="width-forty pad-300-h card-img">
-      <div class="image-box shadow">
+     <section id="recommendation-album-img" class="width-forty card-img">
+       <a 
+       href="${itemObj.external_urls.spotify}"
+       target="_blank" 
+       class="song-result tertiary-txt" 
+       data-song-id="${itemObj.id}">
+      <div class="image-box">
         <div class="img-wrapper">
+      
           ${img}
-          <div class="overlay"></div>
+          <div class="overlay radius">
+          <img src="images/icons/play.svg" alt="Play in spotify" class="play" /></div>
         </div>
       </div>
+     </a>
      </section>
-     <section id="recommendation-content" class="rows card-content width-sixty">
+     <section id="recommendation-content" class="rows card-content width-sixty pad-300-left">
       <section id="recommendation-content-heading" class="">
        <h3 class="text-500">
        <a 
        href="${itemObj.external_urls.spotify}"
        target="_blank" 
-       class="song-result" 
+       class="song-result tertiary-txt" 
        data-song-id="${itemObj.id}">
           ${itemObj.name}
        </a>
        </h3>
       </section>
       <section id="recommendation-content-subheading" class="flex-container-row">
-        <div class="rows flex-item-wrapper width-half">
-          <h4 class="pad-min pill secondary text-300">Artist(s)</h4>
+        <div class="rows flex-item-wrapper width-half pad-300-h">
+          <h4 class="text-300 primary-decoration-b">Artist(s)</h4>
           <p>${itemObj.artists.map((e) => e.name).join(', ')}<p>
         </div>
-        <div class="rows flex-item-wrapper width-half">
-          <h4 class="pad-min pill secondary text-300">Album</h4>
+        <div class="rows flex-item-wrapper width-half pad-300-h">
+          <h4 class="text-300 primary-decoration-b">Album</h4>
           <p>${itemObj.album.name}<p>
         </div>
       </section>
@@ -452,6 +460,7 @@ function handleQueryResultClick() {
       $(e.currentTarget).parent().removeClass('search-list-element');
       $(e.currentTarget).parent().addClass('selected-list-element');
       $(e.currentTarget).find('.caption').find('h4').addClass('hidden');
+      $(e.currentTarget).find('.overlay').append('<img src="images/icons/cancel.svg" alt="Delete selection" class="cancel-icon" />');
       $(e.currentTarget).off();
 
       renderSeedSelection($(e.currentTarget).parent());
