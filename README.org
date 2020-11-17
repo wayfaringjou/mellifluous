@@ -1,15 +1,26 @@
 * 'Mellifluous'
+[[https://wayfaringjou.github.io/mellifluous/][Link to live app]]
+** Description
 Help users find new songs and artists by getting recommendations based on a song or artist they like and several other preferences using [[https://developer.spotify.com/documentation/web-api/][Spotify's]] API.
 
-
+** Screenshots
+- Landing view with search results.
 #+CAPTION: Landing view with search results.
 #+NAME:   fig:Search
 [[./screens/search.jpg]]
 
+- Customization options for recommendations.
 #+CAPTION: Customization options for recommendations.
 #+NAME:   fig:Search
 [[./screens/customize.jpg]]
 
+- Some track recommendations.
 #+CAPTION: Some track recommendations.
 #+NAME:   fig:Recommendations
 [[./screens/recommendations.jpg]]
+
+** Summary
+The user can search for up to five songs or artists to use as reference. Using spotify's recommendations API the user is given a list of songs that are similar to the references. The user can further customize their results by changing the range values of the target attributes of the recommended songs.
+
+** Built with
+This project was made using HTML, CSS, JavaScript and jQuery.
