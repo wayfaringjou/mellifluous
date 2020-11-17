@@ -125,7 +125,7 @@
          id="stop1316" />
       <stop
          style="stop-color:#9319b6;stop-opacity:1"
-         offset="0.44336167"
+         offset="0.50116336"
          id="stop852" />
       <stop
          style="stop-color:#00aed8;stop-opacity:1"
@@ -148,9 +148,9 @@
        xlink:href="#linearGradient1320"
        id="linearGradient1326"
        x1="90.369324"
-       y1="32.084412"
+       y1="34.05027"
        x2="90.550323"
-       y2="65.219078"
+       y2="62.26017"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(1.1730291,0,0,1.0099989,-19.96203,-32.150423)" />
   </defs>
@@ -162,18 +162,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.8956518"
-     inkscape:cx="369.77979"
+     inkscape:cx="306.16599"
      inkscape:cy="109.35349"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      showborder="true"
-     inkscape:window-width="1920"
+     inkscape:window-width="960"
      inkscape:window-height="1017"
      inkscape:window-x="0"
      inkscape:window-y="27"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      inkscape:snap-global="false"
      inkscape:showpageshadow="false"
      units="px"
@@ -186,7 +186,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -3,13 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--
-    link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-      crossorigin="anonymous"
-     -->
     <!-- Modern reset from: https://github.com/hankchizljaw/modern-css-reset -->
     <link
       rel="stylesheet"
@@ -27,10 +20,12 @@
   </head>
   <body>
     <header>
+      <aside class="error-msg-container">
+        <h3>Error</h3>
+      </aside>
       <section id="logo" class="pad-800-v inner-wrapper-loose">
         <img src="images/logo.svg" alt="Mellifluous" class="width-full" />
       </section>
-
       <section
         id="mellifluous-intro"
         class="inner-wrapper pad-base-h gap-800-v"
@@ -41,7 +36,10 @@
     <main>
       <article id="search-form" class="pad-base-h pad-base-v gap-600-top">
         <form id="keyword-search" class="inner-wrapper">
-          <fieldset aria-labelledby="search-action-call">
+          <fieldset>
+            <legend class="visually-hidden">
+              Select to search for song or artist and enter a name.
+            </legend>
             <h2 id="search-action-call">
               First, let's find something you like.
             </h2>
@@ -93,6 +91,7 @@
                   name="keyword-search-input"
                   id="keyword-search-input"
                   class="width-full pad-300-left pad-base-v text-600"
+                  aria-controls="search-results"
                 />
               </div>
 
@@ -107,45 +106,101 @@
           </fieldset>
         </form>
       </article>
-      <section id="search-results" class="hidden inner-wrapper pad-min">
+      <section
+        id="search-results"
+        class="hidden inner-wrapper pad-min"
+        role="region"
+        aria-live="polite"
+        aria-relevant="additions"
+      >
         <h2 class="primary-decoration pad-min-left">Select from results:</h2>
         <ul
           id="search-results-list"
-          class="flex-container-row rows mq-m-no-rows pad-300-right gap-600-v"
+          class="flex-container-row pad-300-right gap-base-v"
         ></ul>
       </section>
-      <section id="seed-selection" class="hidden rows mq-m-no-rows inner-wrapper pad-min mq-m-pad-300">
+      <section
+        id="seed-selection"
+        class="hidden rows inner-wrapper pad-min mq-m-pad-300"
+        role="region"
+        aria-live="polite"
+        aria-relevant="additions removals"
+      >
         <h2 class="primary-decoration pad-min-left">Your selection:</h2>
         <p class="gap-300-left">
           You can select up to five items to find tracks.
         </p>
+        <div
+          class="clear-all flex-container-row gap-600-v gap-300-right align-right"
+        >
+          <input
+            type="image"
+            src="images/icons/cancel.svg"
+            alt="Clear all selections"
+            class="width-600 gap-min-right clear clear-icon focus-icon"
+          />
+          <p class="tertiary-txt width-quarter text-600">
+            <a href="#" class="clear clear-text focus-txt">Clear all</a>
+          </p>
+        </div>
         <ul
           id="seed-selection-list"
-          class="flex-container-row pad-300-right pad-300-v radius rows"
+          class="flex-container-row pad-300-right pad-300-v radius"
         ></ul>
       </section>
-      <section id="recommendations" class="gap-600-top flex-container hidden pad-min inner-wrapper">
+      <section
+        id="recommendations"
+        class="gap-600-top flex-container hidden pad-min inner-wrapper"
+        role="region"
+        aria-live="polite"
+        aria-relevant="additions"
+      >
         <aside id="customization-form" class="width-full">
           <form id="customize-recommendations" class="box">
             <fieldset>
-              <legend><h2 class="primary-decoration pad-min-left gap-base-v">Customize your recommendations</h2></legend>
+              <legend>
+                <h2 class="primary-decoration pad-min-left gap-base-v">
+                  Customize your recommendations
+                </h2>
+              </legend>
             </fieldset>
           </form>
         </aside>
-        <section id="recommendations-results" class="width-full gap-600-v pad-min">
+        <section
+          id="recommendations-results"
+          class="width-full gap-600-v pad-min"
+        >
           <h2 class="primary-decoration pad-min-left">Recommendations:</h2>
-
           <ul id="recommendations-results-list" class="gap-600-top rows"></ul>
         </section>
       </section>
     </main>
-    <footer class="flex-container dark-grey-txt">
-      <hr class="" />
-      <section id="copyright" class="flex-item-center">
+    <footer class="flex-container">
+      <hr class="footer-rule" />
+      <section id="copyright" class="flex-container flex-item-center">
         <p>© 2020 Joel Del Cueto</p>
-        <!--
-        With lots of feedback from Ele_hopper.
-        -->
+        <div class="flex-container-row gap-300-v gap-base-v flex-item-center">
+          <a
+            href="https://github.com/wayfaringjou"
+            target="_blank"
+            class="focus-icon"
+          >
+            <img src="images/icons/github.svg" alt="Github" class="width-600" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/joel-del-cueto-a8ba031b8"
+            target="_blank"
+            class="focus-icon"
+          >
+            <img
+              src="images/icons/linkedin.svg"
+              alt="LinkedIn"
+              class="width-600 gap-300-left"
+            />
+          </a>
+        </div>
+        <p>With lots of feedback from Ele_hopper and my family.</p>
+
         <div>
           Icons made by
           <a href="https://www.flaticon.com/authors/freepik" title="Freepik"
