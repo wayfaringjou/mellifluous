@@ -461,8 +461,13 @@ function handleKeywordSearchSubmit() {
     requestKeywordSearch(keywordQuery, [queryType])
       .then((queryResponseJson) => storeResults(searchResults, queryResponseJson[`${queryType}s`].items))
       .then((storedResults) => {
-        renderResults(storedResults, '#search-results-list', generateListArticle);
-        $('#search-results').removeClass('hidden');
+        console.log(storedResults);
+        if (Object.keys(storedResults).length > 0) {
+          renderResults(storedResults, '#search-results-list', generateListArticle);
+          $('#search-results').removeClass('hidden');
+        } else {
+          renderError('No results found for that name.');
+        }
       });
   });
 }

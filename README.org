@@ -1,2 +1,15 @@
 * 'Mellifluous'
-Help users find new songs and artists by getting recommendations based on a song or artist they like and several other preferences using [[https://developer.spotify.com/documentation/web-api/][Spotify]] and [[https://rapidapi.com/theaudiodb/api/theaudiodb][TheAudioDB]] APIS.
+Help users find new songs and artists by getting recommendations based on a song or artist they like and several other preferences using [[https://developer.spotify.com/documentation/web-api/][Spotify's]] API.
+
+
+#+CAPTION: Landing view with search results.
+#+NAME:   fig:Search
+[[./screens/search.jpg]]
+
+#+CAPTION: Customization options for recommendations.
+#+NAME:   fig:Search
+[[./screens/customize.jpg]]
+
+#+CAPTION: Some track recommendations.
+#+NAME:   fig:Recommendations
+[[./screens/recommendations.jpg]]
