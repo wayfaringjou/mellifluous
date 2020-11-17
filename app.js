@@ -378,25 +378,23 @@ function generateRecommendationArticle(storageObj, itemId) {
   <li>
    <article id="recommendation-item" class="flex-container-row card reccomendation-card">
      <section id="recommendation-album-img" class="width-forty card-img">
-       
       <div class="image-box">
         <div class="img-wrapper">
-      
           ${img}
           <div class="overlay radius">
           <a 
-       href="${itemObj.external_urls.spotify}"
-       target="_blank" 
-       class="song-result tertiary-txt" 
-       data-song-id="${itemObj.id}">
-          <img src="images/icons/play.svg" alt="Play in spotify." class="play" />
+           href="${itemObj.external_urls.spotify}"
+           target="_blank" 
+           class="song-result tertiary-txt" 
+           data-song-id="${itemObj.id}">
+            <img src="images/icons/play.svg" alt="Play in spotify." class="play" />
           </a>
           </div>
         </div>
       </div>
      
      </section>
-     <section id="recommendation-content" class="rows card-content width-sixty pad-300-left">
+     <section id="recommendation-content" class="rows card-content width-sixty pad-300-left pad-300-top">
       <section id="recommendation-content-heading" class="">
        <h3 class="text-500 mq-m-text-800">
        <a 

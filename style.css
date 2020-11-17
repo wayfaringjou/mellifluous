@@ -1,82 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&family=Karla&display=swap");
 
-/* Design Tokens */
-
-:root {
-  /* Pallette */
-  --primary: 0, 174, 216;
-  --primary-light: 97, 223, 255;
-  --primary-dark: 0, 126, 166;
-  --secondary: 75, 230, 207;
-  --secondary-light: 135, 255, 255;
-  --secondary-dark: 0, 179, 158;
-  --tertiary: 147, 25, 182;
-  --tertiary-light: 200, 83, 233;
-  --tertiary-dark: 97, 0, 133;
-  --dark: 15, 14, 43;
-  --light: 232, 253, 254;
-  --grey: 240, 240, 240;
-  --dark-grey: 195, 195, 201;
-  /* Font */
-  --fnt-heading: "Poppins", sans-serif;
-  --fnt-body: "Karla", sans-serif;
-
-  /* Scale */
-
-  /* Major third modular scale for text and spacing.
-  Formulas from: https://every-layout.dev/rudiments/modular-scale/
-  */
-
-  /* Growth ratio */
-  --ratio: 1.25;
-
-  /* Scales */
-  --s900: 3.052rem;
-  --s800: 2.441rem;
-  --s700: 1.953rem;
-  --s600: 1.563rem;
-  --s500: 1.25rem;
-
-  /* Base */
-  --s400: 1rem;
-  --s300: 0.8rem;
-  --smin: 0.262rem;
-
-  /* Gradient */
-
-  --gradient: linear-gradient(
-    to top,
-    hsl(170.77, 76.47%, 60%) 0%,
-    hsl(174.05, 63.43%, 59.7%) 0.9%,
-    hsl(179.12, 50.87%, 58.97%) 3.4%,
-    hsl(186.48, 45.9%, 59.91%) 7.3%,
-    hsl(195.83, 42.2%, 60.96%) 12.5%,
-    hsl(207.54, 38.67%, 61.85%) 18.8%,
-    hsl(222.04, 35.35%, 62.61%) 26%,
-    hsl(239.81, 32.26%, 63.26%) 33.9%,
-    hsl(255.72, 36.11%, 60.03%) 42.2%,
-    hsl(266.3, 39.58%, 56.77%) 51%,
-    hsl(273.61, 42.7%, 53.54%) 59.9%,
-    hsl(278.78, 45.52%, 50.35%) 68.7%,
-    hsl(282.44, 53.63%, 47.26%) 77.3%,
-    hsl(284.98, 63.04%, 44.38%) 85.5%,
-    hsl(286.58, 71.85%, 42.02%) 93.2%,
-    hsl(287.17, 76.08%, 40.98%) 100%
-  );
-  --gradient--linear: linear-gradient(
-    to top,
-    hsla(171, 76%, 60%, 1),
-    hsla(287, 76%, 41%, 1)
-  );
-}
-
 /* Global */
 body {
-  font-family: var(--fnt-body);
+  font-family: "Karla", sans-serif;
   font-weight: 600;
   line-height: 1.75rem;
-  color: rgb(var(--dark));
-  background-color: rgb(var(--grey));
+  color: rgb(15, 14, 43);
+  background-color: rgb(240, 240, 240);
 }
 
 h1,
@@ -85,33 +15,33 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--fnt-body);
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   line-height: 1.2em;
 }
 
 h1 {
-  font-size: var(--s900);
+  font-size: 3.052rem;
   letter-spacing: -0.09375rem;
 }
 
 h2 {
-  font-size: var(--s800);
+  font-size: 2.441rem;
   letter-spacing: -0.03125rem;
 }
 
 h3 {
-  font-size: var(--s700);
+  font-size: 1.953rem;
   letter-spacing: 0;
 }
 
 h4 {
-  font-size: var(--s600);
+  font-size: 1.563rem;
   letter-spacing: 0.015625em;
 }
 
 a {
-  color: var(--secondary);
+  color: rgb(147, 25, 185);
   text-decoration: none;
 }
 
@@ -129,23 +59,16 @@ fieldset {
 
 :focus {
   outline: 0;
-  text-decoration: underline rgb(var(--secondary)) solid;
+  text-decoration: underline rgb(75, 230, 207) solid;
 }
 
 input[type="image"] {
   border: 0;
 }
 
-p {
-  -webkit-hyphens: auto;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  hyphens: auto;
-}
-
 hr {
   width: 55%;
-  border: 1px solid rgb(var(--dark-grey));
+  border: 1px solid rgb(195, 195, 201);
 }
 
 footer {
@@ -156,105 +79,109 @@ footer {
 
 /* Spacing */
 .pad-min {
-  padding: var(--smin);
+  padding: 0.262rem;
 }
 
 /* Horizontal paddings */
 .pad-min-left {
-  padding-left: var(--smin);
+  padding-left: 0.262rem;
 }
 
 .pad-300-h {
-  padding-left: var(--s300);
-  padding-right: var(--s300);
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
 }
 
 .pad-300-left {
-  padding-left: var(--s300);
+  padding-left: 0.8rem;
 }
 
 .pad-base-h {
-  padding-left: var(--s400);
-  padding-right: var(--s400);
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .pad-300-right {
-  padding-right: var(--s300);
+  padding-right: 0.8rem;
 }
 
 .pad-600-h {
-  padding-left: var(--s600);
-  padding-right: var(--s600);
+  padding-left: 1.563rem;
+  padding-right: 1.563rem;
 }
 
 /* Vertical paddings */
 .pad-300-v {
-  padding-top: var(--s300);
-  padding-bottom: var(--s300);
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+.pad-300-top {
+  padding-top: 0.8rem;
 }
 
 .pad-base-v {
-  padding-top: var(--s400);
-  padding-bottom: var(--s400);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .pad-600-v {
-  padding-top: var(--s600);
-  padding-bottom: var(--s600);
+  padding-top: 1.563rem;
+  padding-bottom: 1.563rem;
 }
 
 .pad-800-v {
-  padding-top: var(--s600);
-  padding-bottom: var(--s600);
+  padding-top: 1.563rem;
+  padding-bottom: 1.563rem;
 }
 
 /* Vertical margins */
 
 .gap-base-v {
-  margin-top: var(--s400);
-  margin-bottom: var(--s400);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .gap-600-v {
-  margin-top: var(--s600);
-  margin-bottom: var(--s600);
+  margin-top: 1.563rem;
+  margin-bottom: 1.563rem;
 }
 
 .gap-600-top {
-  margin-top: var(--s600);
+  margin-top: 1.563rem;
 }
 
 .gap-800-v {
-  margin-top: var(--s800);
-  margin-bottom: var(--s800);
+  margin-top: 2.441rem;
+  margin-bottom: 2.441rem;
 }
 
 .gap-800-top {
-  margin-top: var(--s800);
+  margin-top: 2.441rem;
 }
 
 .gap-300-left {
-  margin-left: var(--s300);
+  margin-left: 0.8rem;
 }
 
 .gap-300-right {
-  margin-left: var(--s300);
+  margin-left: 0.8rem;
 }
 
 .gap-min-right {
-  margin-right: var(--smin);
+  margin-right: 0.262rem;
 }
 
 .text-300 {
-  font-size: var(--s300);
+  font-size: 0.8rem;
 }
 
 .text-500 {
-  font-size: var(--s500);
+  font-size: 1.25rem;
 }
 
 .text-600 {
-  font-size: var(--s600);
+  font-size: 1.563rem;
 }
 
 .uppercase {
@@ -267,7 +194,7 @@ footer {
 redundant margins in first or last element of a set. */
 .rows > * + * {
   /* If no --flow-space is defined use 1em as value */
-  margin-top: var(--flow-space, 1.25em);
+  margin-top: 1.25em;
 }
 
 .flex-container {
@@ -306,7 +233,7 @@ redundant margins in first or last element of a set. */
 }
 
 .width-600 {
-  width: var(--s600);
+  width: 1.563rem;
 }
 
 .align-right {
@@ -348,7 +275,7 @@ redundant margins in first or last element of a set. */
 }
 
 .radius {
-  border-radius: var(--s300);
+  border-radius: 0.8rem;
 }
 
 .overlay {
@@ -356,7 +283,7 @@ redundant margins in first or last element of a set. */
   width: 100%;
   position: absolute;
   top: 0;
-  border-radius: var(--s300);
+  border-radius: 0.8rem;
 }
 
 .overlay .cancel-icon {
@@ -367,7 +294,7 @@ redundant margins in first or last element of a set. */
 .overlay .play {
   width: 35%;
   opacity: 80%;
-  padding: var(--smin);
+  padding: 0.262rem;
   border-radius: 50%;
   top: 60%;
   left: 60%;
@@ -376,13 +303,13 @@ redundant margins in first or last element of a set. */
 .song-result:focus .play,
 .song-result:hover .play {
   opacity: 100%;
-  border: var(--smin) solid rgb(var(--secondary));
+  border: 0.262rem solid rgb(75, 230, 207);
 }
 
 .radio {
   display: grid;
   grid-template-columns: min-content min-content;
-  grid-gap: var(--smin);
+  grid-gap: 0.262rem;
 }
 
 .radio-input {
@@ -401,69 +328,83 @@ redundant margins in first or last element of a set. */
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  border: 0.125em solid rgb(var(--tertiary));
+  border: 0.125em solid rgb(147, 25, 185);
 }
 
 .radio-input input:checked + .radio-control {
-  background: radial-gradient(rgb(var(--tertiary)) 50%, rgba(255, 0, 0, 0) 51%);
+  background: radial-gradient(rgb(147, 25, 185) 50%, rgba(255, 0, 0, 0) 51%);
 }
 
 .radio-input input:focus + .radio-control {
-  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(var(--secondary));
+  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(75, 230, 207);
 }
 
 /* Color */
 
 .primary-decoration {
-  border-left: 3px dotted rgb(var(--primary));
+  border-left: 3px dotted rgb(0, 174, 216);
 }
 
 .primary-decoration-b {
-  border-bottom: 3px dotted rgb(var(--primary));
+  border-bottom: 3px dotted rgb(0, 174, 216);
 }
 
 .tertiary-txt {
-  color: rgb(var(--tertiary));
+  color: rgb(147, 25, 185);
 }
 
 .dark-txt-shadow {
-  text-shadow: 1px 1px rgb(var(--dark));
+  text-shadow: 1px 1px rgb(15, 14, 43);
 }
 
 .light-txt {
-  color: rgb(var(--light));
+  color: rgb(232, 253, 254);
 }
 
 .dark-grey-txt {
-  color: rgb(var(--dark-grey));
+  color: rgb(195, 195, 201);
 }
 
 .shadow {
-  box-shadow: 0 2.8px 2.2px rgba(var(--dark), 0.034),
-    0 6.7px 5.3px rgba(var(--dark), 0.048),
-    0 12.5px 10px rgba(var(--dark), 0.06),
-    0 22.3px 17.9px rgba(var(--dark), 0.072),
-    0 41.8px 33.4px rgba(var(--dark), 0.086),
-    0 100px 80px rgba(var(--dark), 0.12);
+  box-shadow: 0 2.8px 2.2px rgba(15, 14, 43, 0.034),
+    0 6.7px 5.3px rgba(15, 14, 43, 0.048), 0 12.5px 10px rgba(15, 14, 43, 0.06),
+    0 22.3px 17.9px rgba(15, 14, 43, 0.072),
+    0 41.8px 33.4px rgba(15, 14, 43, 0.086), 0 100px 80px rgba(15, 14, 43, 0.12);
 }
 
 .shadow-tertiary {
-  box-shadow: 0 2.8px 2.2px rgba(var(--tertiary-dark), 0.034),
-    0 6.7px 5.3px rgba(var(--tertiary-dark), 0.048),
-    0 12.5px 10px rgba(var(--tertiary-dark), 0.06),
-    0 22.3px 17.9px rgba(var(--tertiary-dark), 0.072),
-    0 41.8px 33.4px rgba(var(--tertiary-dark), 0.086),
-    0 100px 80px rgba(var(--tertiary-dark), 0.12);
+  box-shadow: 0 2.8px 2.2px rgba(97, 0, 133, 0.034),
+    0 6.7px 5.3px rgba(97, 0, 133, 0.048), 0 12.5px 10px rgba(97, 0, 133, 0.06),
+    0 22.3px 17.9px rgba(97, 0, 133, 0.072),
+    0 41.8px 33.4px rgba(97, 0, 133, 0.086), 0 100px 80px rgba(97, 0, 133, 0.12);
 }
 
 .easing-gradient-tint {
-  background-image: var(--gradient);
+  background-image: linear-gradient(
+    to top,
+    hsl(170.77, 76.47%, 60%) 0%,
+    hsl(174.05, 63.43%, 59.7%) 0.9%,
+    hsl(179.12, 50.87%, 58.97%) 3.4%,
+    hsl(186.48, 45.9%, 59.91%) 7.3%,
+    hsl(195.83, 42.2%, 60.96%) 12.5%,
+    hsl(207.54, 38.67%, 61.85%) 18.8%,
+    hsl(222.04, 35.35%, 62.61%) 26%,
+    hsl(239.81, 32.26%, 63.26%) 33.9%,
+    hsl(255.72, 36.11%, 60.03%) 42.2%,
+    hsl(266.3, 39.58%, 56.77%) 51%,
+    hsl(273.61, 42.7%, 53.54%) 59.9%,
+    hsl(278.78, 45.52%, 50.35%) 68.7%,
+    hsl(282.44, 53.63%, 47.26%) 77.3%,
+    hsl(284.98, 63.04%, 44.38%) 85.5%,
+    hsl(286.58, 71.85%, 42.02%) 93.2%,
+    hsl(287.17, 76.08%, 40.98%) 100%
+  );
   opacity: 0.8;
 }
 
 .visually-hidden {
   border: 0;
-  clip: rect(0 0 0 0);
+  clip: rect(0, 0, 0, 0);
   height: auto;
   margin: 0;
   overflow: hidden;
@@ -479,17 +420,17 @@ redundant margins in first or last element of a set. */
 
 .focus-txt:focus,
 .focus-txt:hover {
-  text-decoration: underline rgb(var(--secondary)) solid;
+  text-decoration: underline rgb(75, 230, 207) solid;
 }
 
 .focus-icon:focus {
-  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(var(--secondary));
+  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(75, 230, 207);
   border-radius: 50%;
 }
 
 /* Modules */
 .search-box {
-  border: 0 solid rgb(var(--grey));
+  border: 0 solid rgb(240, 240, 240);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -503,26 +444,26 @@ redundant margins in first or last element of a set. */
   border-radius: 4rem;
   border: 0;
   text-transform: uppercase;
-  background-color: rgb(var(--tertiary));
-  color: rgb(var(--light));
+  background-color: rgb(147, 25, 185);
+  color: rgb(232, 253, 254);
 }
 
 .button:focus,
 .button:hover {
   outline-style: none;
   transform: scale(1.05);
-  background-color: rgb(var(--tertiary-light));
+  background-color: rgb(200, 83, 233);
   text-decoration: none;
 }
 
 .button:active {
   transform: scale(0.95);
-  background-color: rgb(var(--tertiary-dark));
+  background-color: rgb(97, 0, 133);
 }
 
 .search-prompt input[type="search"] {
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(var(--grey));
+  border: 1px solid rgb(240, 240, 240);
 }
 
 .image-box {
@@ -536,8 +477,12 @@ redundant margins in first or last element of a set. */
   max-height: 100%;
   max-width: 100%;
   overflow: hidden;
-  --flow-space: 0.15em;
 }
+
+.image-box .rows > * + * {
+  margin-top: 0.15em;
+}
+
 .image-box .caption h3 {
   font-size: 6.15vw;
 }
@@ -555,13 +500,21 @@ redundant margins in first or last element of a set. */
 }
 
 .image-box input[type="image"]:focus + .overlay {
-  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(var(--secondary));
+  box-shadow: 0 0 0 0.125em #fff, 0 0 0 0.25em rgb(75, 230, 207);
   transform: scale(1.05);
-  background-image: var(--gradient--linear);
+  background-image: linear-gradient(
+    to top,
+    hsla(171, 76%, 60%, 1),
+    hsla(287, 76%, 41%, 1)
+  );
 }
 
 .image-box:hover .overlay {
-  background-image: var(--gradient--linear);
+  background-image: linear-gradient(
+    to top,
+    hsla(171, 76%, 60%, 1),
+    hsla(287, 76%, 41%, 1)
+  );
 }
 
 .clear-icon {
@@ -570,7 +523,7 @@ redundant margins in first or last element of a set. */
 
 .attribute-range .attribute-icon {
   width: 14%;
-  margin: 0 var(--smin);
+  margin: 0 0.262rem;
 }
 
 .attribute-range .attribute-label {
@@ -589,10 +542,12 @@ redundant margins in first or last element of a set. */
 }
 
 .card-content {
-  --flow-space: 0.15em;
-
   line-height: 1.25em;
   overflow: hidden;
+}
+
+.card .rows > * + * {
+  margin-top: 0.15em;
 }
 
 .card-content p {
@@ -651,7 +606,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 input[type="range"]:focus::-webkit-slider-runnable-track {
-  background: rgb(var(--secondary));
+  background: rgb(75, 230, 207);
 }
 
 input[type="range"]::-moz-range-track {
@@ -710,7 +665,7 @@ input[type="range"]:focus::-ms-fill-lower {
 }
 
 input[type="range"]:focus::-ms-fill-upper {
-  background: rgb(var(--secondary));
+  background: rgb(75, 230, 207);
 }
 
 @supports (-ms-ime-align: auto) {
@@ -726,23 +681,23 @@ input[type="range"]:focus::-ms-fill-upper {
   }
 
   .mq-m-no-rows > * {
-    margin-top: var(--s300);
+    margin-top: 0.8rem;
   }
 
   .mq-m-pad-300 {
-    padding: var(--s300);
+    padding: 0.8rem;
   }
 
   .mq-m-text-800 {
-    font-size: var(--s800);
+    font-size: 2.441rem;
   }
 
   .mq-m-text-600 {
-    font-size: var(--s600);
+    font-size: 1.563rem;
   }
 
   .mq-m-text-500 {
-    font-size: var(--s500);
+    font-size: 1.25rem;
   }
 
   .mq-m-flex-container-column {
@@ -754,14 +709,14 @@ input[type="range"]:focus::-ms-fill-upper {
   }
 
   .image-box .caption h3 {
-    font-size: var(--s700);
+    font-size: 1.563rem;
   }
 
   .image-box .caption h4 {
-    font-size: var(--s600);
+    font-size: 1.25rem;
   }
 
-  .card-content {
-    --flow-space: 1.25rem;
+  .card .rows > * + * {
+    margin-top: 1.25rem;
   }
 }
