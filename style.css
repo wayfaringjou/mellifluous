@@ -272,6 +272,8 @@ redundant margins in first or last element of a set. */
   top: 0;
   bottom: 0;
   margin: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
 }
 
 .radius {
